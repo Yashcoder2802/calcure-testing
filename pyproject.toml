@@ -2,3 +2,7 @@
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
+[tool.mutmut]
+paths_to_mutate = "calcure/data.py,calcure/calendars.py"
+tests_dir = "."
+runner = "python -m pytest test_blackbox.py test_whitebox.py test_integration.py test_mock.py -x -q"
