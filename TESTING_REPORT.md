@@ -27,11 +27,11 @@ Per the course requirements, we conducted **four** types of testing:
 
 | Type | File | Tests | Section |
 |---|---|---|---|
-| Blackbox (EP + BA + EG + CT) | `test_blackbox.py` | 115 | 2.1 |
-| Whitebox Unit Tests | `test_whitebox.py` | 86 | 2.2 |
-| Whitebox Integration Tests | `test_integration.py` | 21 | 2.2 |
+| Blackbox (EP + BA + EG + CT) | `tests/blackbox/test_blackbox.py` | 115 | 2.1 |
+| Whitebox Unit Tests | `tests/whitebox/test_whitebox.py` | 86 | 2.2 |
+| Whitebox Integration Tests | `tests/integration/test_integration.py` | 21 | 2.2 |
 | Mutation Testing | `mutatest` on `data.py`, `calendars.py` | 784 runs, 81.6% score | 2.3 |
-| Alternate — Mock Testing | `test_mock.py` | 17 | 2.4 |
+| Alternate — Mock Testing | `tests/mock/test_mock.py` | 17 | 2.4 |
 | **Total** | | **239 tests** | |
 
 Blackbox tests are tagged where relevant with EP/BA/EG/CT labels, and the whitebox/integration suites use docstrings to explain the intent of each test.
@@ -146,7 +146,7 @@ def test_ct_weekly_rep2_one_extra_date(self):
 
 Whitebox tests are written with full knowledge of the source code — they target specific branches, algorithms, and implementation details.
 
-### 4.1 Unit Tests (`test_whitebox.py`)
+### 4.1 Unit Tests (`tests/whitebox/test_whitebox.py`)
 
 Each test cites the specific source line or algorithm it validates.
 
@@ -178,7 +178,7 @@ def test_passed_time_paused_sums_one_interval(self):
     self.assertEqual(t.passed_time, "00:30")
 ```
 
-### 4.2 Integration Tests (`test_integration.py`)
+### 4.2 Integration Tests (`tests/integration/test_integration.py`)
 
 Integration tests cross module boundaries and validate end-to-end pipelines.
 
@@ -218,7 +218,10 @@ The final coverage run for the 4 main test files used:
 
 ```bash
 python -m coverage run --branch -m pytest \
-  test_blackbox.py test_whitebox.py test_integration.py test_mock.py -q
+  tests/blackbox/test_blackbox.py \
+  tests/whitebox/test_whitebox.py \
+  tests/integration/test_integration.py \
+  tests/mock/test_mock.py -q
 python -m coverage report -m \
   calcure/data.py calcure/calendars.py calcure/savers.py calcure/loaders.py
 ```
@@ -255,11 +258,11 @@ Mutation testing systematically modifies source code to verify that tests detect
 - **Run commands:**
   ```bash
   mutatest -s calcure/data.py -m f -n 9999 \
-    -t "python -m pytest test_blackbox.py test_whitebox.py test_integration.py test_mock.py -q" \
+    -t "python -m pytest tests/blackbox/test_blackbox.py tests/whitebox/test_whitebox.py tests/integration/test_integration.py tests/mock/test_mock.py -q" \
     -o mutatest_data_full.rst
 
   mutatest -s calcure/calendars.py -m f -n 9999 \
-    -t "python -m pytest test_blackbox.py test_whitebox.py test_integration.py test_mock.py -q" \
+    -t "python -m pytest tests/blackbox/test_blackbox.py tests/whitebox/test_whitebox.py tests/integration/test_integration.py tests/mock/test_mock.py -q" \
     -o mutatest_calendars_full.rst
   ```
 
@@ -349,10 +352,10 @@ def test_timer_passed_time_while_counting_uses_mocked_time(self, mock_time):
 
 | File | Tests | Pass | Fail |
 |---|---|---|---|
-| `test_blackbox.py` | 115 | 115 | 0 |
-| `test_whitebox.py` | 86 | 86 | 0 |
-| `test_integration.py` | 21 | 21 | 0 |
-| `test_mock.py` | 17 | 17 | 0 |
+| `tests/blackbox/test_blackbox.py` | 115 | 115 | 0 |
+| `tests/whitebox/test_whitebox.py` | 86 | 86 | 0 |
+| `tests/integration/test_integration.py` | 21 | 21 | 0 |
+| `tests/mock/test_mock.py` | 17 | 17 | 0 |
 | **Total** | **239** | **239** | **0** |
 
 ### 7.2 Coverage Summary
@@ -417,14 +420,21 @@ pip install icalendar python-dateutil jdatetime holidays pytest coverage mutates
 ### Run All Tests
 
 ```bash
-python -m pytest test_blackbox.py test_whitebox.py test_integration.py test_mock.py -v
+python -m pytest \
+  tests/blackbox/test_blackbox.py \
+  tests/whitebox/test_whitebox.py \
+  tests/integration/test_integration.py \
+  tests/mock/test_mock.py -v
 ```
 
 ### Run With Branch Coverage Report
 
 ```bash
 python -m coverage run --branch -m pytest \
-  test_blackbox.py test_whitebox.py test_integration.py test_mock.py -q
+  tests/blackbox/test_blackbox.py \
+  tests/whitebox/test_whitebox.py \
+  tests/integration/test_integration.py \
+  tests/mock/test_mock.py -q
 python -m coverage report -m \
   calcure/data.py calcure/calendars.py calcure/savers.py calcure/loaders.py
 ```
@@ -433,21 +443,21 @@ python -m coverage report -m \
 
 ```bash
 mutatest -s calcure/data.py -m f -n 9999 \
-  -t "python -m pytest test_blackbox.py test_whitebox.py test_integration.py test_mock.py -q" \
+  -t "python -m pytest tests/blackbox/test_blackbox.py tests/whitebox/test_whitebox.py tests/integration/test_integration.py tests/mock/test_mock.py -q" \
   -o mutatest_data_full.rst
 
 mutatest -s calcure/calendars.py -m f -n 9999 \
-  -t "python -m pytest test_blackbox.py test_whitebox.py test_integration.py test_mock.py -q" \
+  -t "python -m pytest tests/blackbox/test_blackbox.py tests/whitebox/test_whitebox.py tests/integration/test_integration.py tests/mock/test_mock.py -q" \
   -o mutatest_calendars_full.rst
 ```
 
 ### Run Individual Test Types
 
 ```bash
-python -m pytest test_blackbox.py   -v  # Section 2.1 — Blackbox
-python -m pytest test_whitebox.py   -v  # Section 2.2 — Whitebox (unit)
-python -m pytest test_integration.py -v # Section 2.2 — Whitebox (integration)
-python -m pytest test_mock.py       -v  # Section 2.4 — Alternate (mock)
+python -m pytest tests/blackbox/test_blackbox.py   -v  # Section 2.1 — Blackbox
+python -m pytest tests/whitebox/test_whitebox.py   -v  # Section 2.2 — Whitebox (unit)
+python -m pytest tests/integration/test_integration.py -v # Section 2.2 — Whitebox (integration)
+python -m pytest tests/mock/test_mock.py       -v  # Section 2.4 — Alternate (mock)
 ```
 
 ---

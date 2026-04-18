@@ -20,7 +20,8 @@ import time
 import tempfile
 import unittest
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__)))
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+sys.path.insert(0, PROJECT_ROOT)
 
 from calcure.data import (
     Task, UserEvent, Event, Timer, Tasks, Events, Birthdays,
