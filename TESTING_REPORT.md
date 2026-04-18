@@ -231,12 +231,12 @@ The resulting coverage table is:
 ```
 Name                   Stmts   Miss Branch BrPart  Cover   Missing
 ------------------------------------------------------------------
-calcure/calendars.py      62      1     14      1    97%   96
-calcure/data.py          296      8    128     19    94%   179->exit, 180->179, 190->exit, 191->190, 199->198, 264->exit, 279->exit, 280->279, 287->exit, 288->287, 298->297, 332->exit, 333->332, 340->exit, 341->340, 383-385, 390-392, 396->405, 420->432, 422-423
-calcure/loaders.py       327     48    116      9    84%   150, 163-165, 169-172, 177-211, 246, 263->267, 283-284, 299-300, 342->349, 386-387, 423, 435, 440-442, 447->452, 469, 497-498
+calcure/calendars.py      62      1     12      1    97%   96
+calcure/data.py          296      8    124     19    94%   179->exit, 180->179, 190->exit, 191->190, 199->198, 264->exit, 279->exit, 280->279, 287->exit, 288->287, 298->297, 332->exit, 333->332, 340->exit, 341->340, 383-385, 390-392, 396->405, 420->432, 422-423
+calcure/loaders.py       327     48    108      9    85%   150, 163-165, 169-172, 177-211, 246, 263->267, 283-284, 299-300, 342->349, 386-387, 423, 435, 440-442, 447->452, 469, 497-498
 calcure/savers.py         40      2     10      2    92%   26, 56
 ------------------------------------------------------------------
-TOTAL                    725     59    268     31    89%
+TOTAL                    725     59    254     31    89%
 ```
 
 **Notes on uncovered areas from the final run:**
@@ -364,11 +364,11 @@ Fresh coverage results for the 4 main test files:
 
 | Module | Stmts | Miss | Branch | BrPart | Cover |
 |---|---|---|---|---|---|
-| `calcure/calendars.py` | 62 | 1 | 14 | 1 | 97% |
-| `calcure/data.py` | 296 | 8 | 128 | 19 | 94% |
-| `calcure/loaders.py` | 327 | 48 | 116 | 9 | 84% |
+| `calcure/calendars.py` | 62 | 1 | 12 | 1 | 97% |
+| `calcure/data.py` | 296 | 8 | 124 | 19 | 94% |
+| `calcure/loaders.py` | 327 | 48 | 108 | 9 | 85% |
 | `calcure/savers.py` | 40 | 2 | 10 | 2 | 92% |
-| **Total** | **725** | **59** | **268** | **31** | **89%** |
+| **Total** | **725** | **59** | **254** | **31** | **89%** |
 
 The remaining misses are concentrated in `loaders.py` and in a few recurrence/time-edge branches inside `data.py`.
 

@@ -57,6 +57,9 @@ cover/
 
 # Mutation testing
 .mutmut-cache
+mutants/
+mutatest_*.rst
+*.html
 
 # Translations
 *.mo
