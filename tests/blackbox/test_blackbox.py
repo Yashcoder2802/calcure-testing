@@ -234,6 +234,16 @@ class TestTaskManagement(unittest.TestCase):
         self.assertEqual(len(self.tasks.items), 1)
         self.assertEqual(self.tasks.items[0].name, "Beta")
 
+    # --- Fault-revealing edge cases ---
+
+    def test_add_task_whitespace_only_name_rejected(self):
+        """[EG] Whitespace-only name — a name of only spaces has no visible content and
+        should be rejected just like an empty name.
+        FAULT FOUND: the guard `len(name) > 0` passes for "   " (len=3), so the task
+        is accepted. Expected behaviour: reject whitespace-only names."""
+        self.tasks.add_item(make_task(name="   "))
+        self.assertEqual(len(self.tasks.items), 0)   # FAILS — reveals the bug
+
     # --- Subtask ---
 
     def test_add_subtask_prefix_present(self):
@@ -917,6 +927,26 @@ class TestDataPersistence(unittest.TestCase):
 
             self.assertEqual(len(loaded.items), 0)
             self.assertTrue(os.path.exists(filepath))
+
+    def test_event_loader_malformed_csv_does_not_crash(self):
+        """[EG] Malformed CSV row — when a row has a non-integer in the year column,
+        the loader must skip that row gracefully and return 0 items rather than crashing.
+        FAULT FOUND: EventLoaderCSV raises ValueError: invalid literal for int() with
+        base 10 when `int(row[1])` encounters a non-numeric year field."""
+        from calcure.loaders import EventLoaderCSV
+
+        with tempfile.NamedTemporaryFile(suffix=".csv", delete=False, mode="w",
+                                         encoding="utf-8") as f:
+            filepath = f.name
+            f.write('0,not-a-year,9,15,"Conference",3,weekly,normal\n')
+
+        try:
+            cf = self._make_config(filepath, filepath)
+            loaded = EventLoaderCSV(cf).load()
+            # Bad row should be silently skipped, not raise ValueError
+            self.assertEqual(len(loaded.items), 0)   # FAILS — reveals the crash bug
+        finally:
+            os.unlink(filepath)
 
 
 # ===========================================================================

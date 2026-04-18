@@ -128,17 +128,17 @@ def test_ct_weekly_rep2_one_extra_date(self):
 
 | Test Class | Tests | Techniques | Result |
 |---|---|---|---|
-| TestTaskManagement | 23 | EP, BA, EG | ✅ All pass |
+| TestTaskManagement | 24 | EP, BA, EG | ⚠️ 1 FAIL (fault found) |
 | TestEventManagement | 11 | EP, BA, EG | ✅ All pass |
 | TestTimerBehavior | 8 | EP, BA | ✅ All pass |
 | TestCollectionBehavior | 9 | EP, BA, EG | ✅ All pass |
 | TestFilteringBehavior | 9 | EP, EG | ✅ All pass |
 | TestCalendarBehavior | 15 | EP, BA | ✅ All pass |
 | TestRepeatedEventsBehavior | 10 | EP | ✅ All pass |
-| TestDataPersistence | 10 | EP, EG | ✅ All pass |
+| TestDataPersistence | 11 | EP, EG | ⚠️ 1 FAIL (fault found) |
 | TestICSImportBehavior | 3 | EP, EG | ✅ All pass |
 | TestCombinatorialTesting | 17 | CT | ✅ All pass |
-| **Total** | **115** | | **✅ 115/115** |
+| **Total** | **117** | | **✅ 115/117 pass · ❌ 2 reveal faults** |
 
 ---
 
@@ -350,13 +350,13 @@ def test_timer_passed_time_while_counting_uses_mocked_time(self, mock_time):
 
 ### 7.1 Final Test Count
 
-| File | Tests | Pass | Fail |
-|---|---|---|---|
-| `tests/blackbox/test_blackbox.py` | 115 | 115 | 0 |
-| `tests/whitebox/test_whitebox.py` | 86 | 86 | 0 |
-| `tests/integration/test_integration.py` | 21 | 21 | 0 |
-| `tests/mock/test_mock.py` | 17 | 17 | 0 |
-| **Total** | **239** | **239** | **0** |
+| File | Tests | Pass | Fail | Notes |
+|---|---|---|---|---|
+| `tests/blackbox/test_blackbox.py` | 117 | 115 | **2** | Failures reveal 2 real faults |
+| `tests/whitebox/test_whitebox.py` | 86 | 86 | 0 | |
+| `tests/integration/test_integration.py` | 21 | 21 | 0 | |
+| `tests/mock/test_mock.py` | 17 | 17 | 0 | |
+| **Total** | **241** | **239** | **2** | |
 
 ### 7.2 Coverage Summary
 
@@ -389,22 +389,47 @@ The remaining misses are concentrated in `loaders.py` and in a few recurrence/ti
 |---|---|---|
 | Test files | 2 | 6 |
 | Test lines | ~67 | **3,200+** |
-| Tests | ~5 | **239** |
+| Tests | ~5 | **241** |
 | Core coverage (`data/calendars/loaders/savers`) | ~0% | **89%** |
 | Mutation score | 0% | **81.6%** |
+| **Real faults found** | 0 | **2** |
 
 ---
 
 ## 8. Faults Discovered
 
-During testing we did **not** discover crashing bugs in the core logic. However, we identified the following **potential issues and edge cases**:
+We discovered **2 confirmed faults** in the SUT. Both are exposed by failing tests in the blackbox suite.
+
+### Fault 1 — Whitespace-Only Task Names Accepted (data.py)
+
+| Field | Detail |
+|---|---|
+| **Test** | `test_add_task_whitespace_only_name_rejected` (TestTaskManagement) |
+| **Result** | ❌ FAILS — reveals the fault |
+| **Location** | `calcure/data.py`, `Collection.add_item()` |
+| **Root cause** | The input guard is `1000 > len(item.name) > 0`. A name of `"   "` (3 spaces) has `len=3 > 0`, so it passes the check and is accepted. |
+| **Expected** | Names consisting only of whitespace should be rejected (equivalent to empty name from the user's perspective). |
+| **Fix** | Change guard to `1000 > len(item.name.strip()) > 0`. |
+| **Severity** | Medium — a user can create invisible-looking tasks that cannot be found by name search. |
+
+### Fault 2 — Malformed CSV Crashes EventLoaderCSV (loaders.py)
+
+| Field | Detail |
+|---|---|
+| **Test** | `test_event_loader_malformed_csv_does_not_crash` (TestDataPersistence) |
+| **Result** | ❌ FAILS — reveals the crash |
+| **Location** | `calcure/loaders.py`, `EventLoaderCSV.load()` |
+| **Root cause** | `year = int(row[1])` raises `ValueError: invalid literal for int() with base 10` when a CSV row has a non-numeric value in the year column. There is no try/except around this conversion. |
+| **Expected** | Malformed rows should be silently skipped; loading should continue for the remaining rows. |
+| **Fix** | Wrap the integer conversion in a try/except block or add a pre-check. |
+| **Severity** | High — any manually edited or externally corrupted events CSV crashes the loader on startup. |
+
+### Other Potential Issues (not crashes, lower severity)
 
 | Issue | Location | Severity | Notes |
 |---|---|---|---|
 | `ONCE` frequency with `repetition > 1` creates duplicate events on same date | `data.py:RepeatedEvents` | Low | Unusual input combination — UI prevents this |
-| `is_task_format_old` crashes on empty file | `loaders.py:50-55` | Medium | `text[0]` raises IndexError if CSV is empty |
 | Missing `DTSTART` in imported VEVENT creates default date `0/1/1` and time `00:00` | `loaders.py:418-465` | Low | Safe fallback, but semantically odd for imported calendar data |
-| `getDatetime()` not tested for timezone edge cases | `data.py:88-89` | Low | Local timezone used implicitly |
 
 ---
 
