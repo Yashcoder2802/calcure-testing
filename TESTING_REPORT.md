@@ -3,7 +3,7 @@
 
 **Team:** Yash Salunke · Harshal Gajjar  
 **Date:** April 2026  
-**Repository:** https://github.com/anufrievroman/calcure
+**Repository:** https://github.com/Yashcoder2802/calcure-testing
 
 ---
 
@@ -23,16 +23,18 @@
 
 ## 2. Testing Strategy Overview
 
-Per the course requirements, we conducted **four** types of testing:
+Per the course requirements, we conducted **five** types of testing:
 
 | Type | File | Tests | Section |
 |---|---|---|---|
-| Blackbox (EP + BA + EG + CT) | `tests/blackbox/test_blackbox.py` | 115 | 2.1 |
+| Blackbox (EP + BA + EG + CT) | `tests/blackbox/test_blackbox.py` | 117 | 2.1 |
 | Whitebox Unit Tests | `tests/whitebox/test_whitebox.py` | 86 | 2.2 |
 | Whitebox Integration Tests | `tests/integration/test_integration.py` | 21 | 2.2 |
-| Mutation Testing | `mutatest` on `data.py`, `calendars.py` | 784 runs, 81.6% score | 2.3 |
+| Mutation Testing | `mutmut` on `data.py`, `calendars.py` | 784 runs, 81.6% score | 2.3 |
 | Alternate — Mock Testing | `tests/mock/test_mock.py` | 17 | 2.4 |
-| **Total** | | **239 tests** | |
+| Alternate — CLI Testing | `tests/cli/test_cli.py` | 27 | 2.4 |
+| Mutation-Targeted Tests | `tests/mutation/test_mutation.py` | 73 | 2.3 |
+| **Total** | | **341 tests** | |
 
 Blackbox tests are tagged where relevant with EP/BA/EG/CT labels, and the whitebox/integration suites use docstrings to explain the intent of each test.
 
@@ -49,7 +51,7 @@ We divided inputs into **valid** and **invalid** partitions and wrote one repres
 
 | Component | Valid Partition | Invalid Partition |
 |---|---|---|
-| Task name | 1–999 characters | 0 chars, ≥1000 chars |
+| Task name | 1–999 characters | 0 chars, ≥1000 chars, whitespace-only |
 | Task status | NORMAL, DONE, IMPORTANT, UNIMPORTANT | (all covered) |
 | Calendar date input | valid month/day combinations | invalid month, impossible dates |
 | Collection index | 0 to len-1 | negative, ≥ len, None |
@@ -98,6 +100,8 @@ We used intuition and domain knowledge to identify likely error cases.
 | Pass None to is_valid_number | `test_is_valid_number_none` |
 | Toggle same status twice | `test_toggle_task_status_back_to_normal` |
 | Birthday filter ignoring year | `test_birthdays_filter_ignores_year` |
+| Whitespace-only task name | `test_add_task_whitespace_only_name_rejected` (**reveals Fault 1**) |
+| Malformed CSV row | `test_event_loader_malformed_csv_does_not_crash` (**reveals Fault 2**) |
 
 **Example — EG test:**
 ```python
@@ -208,13 +212,11 @@ def test_weekly_event_visible_on_repeated_date(self):
 
 ### 4.3 Branch Coverage Results
 
-We measured branch coverage with `coverage.py --branch`. The latest whitebox additions were designed specifically to improve the previously weakest areas:
+We measured branch coverage with `coverage.py --branch`. The whitebox additions were designed specifically to improve the previously weakest areas:
 
 - `calendars.py` Persian-calendar branches and conversion helpers
 - `loaders.py` old-format CSV handling, BirthdayLoader branches, and Task/Event ICS parsing
 - real `.ics` integration pipelines for recurring events and VTODO import
-
-The final coverage run for the 4 main test files used:
 
 ```bash
 python -m coverage run --branch -m pytest \
@@ -226,23 +228,21 @@ python -m coverage report -m \
   calcure/data.py calcure/calendars.py calcure/savers.py calcure/loaders.py
 ```
 
-The resulting coverage table is:
-
 ```
 Name                   Stmts   Miss Branch BrPart  Cover   Missing
 ------------------------------------------------------------------
 calcure/calendars.py      62      1     12      1    97%   96
-calcure/data.py          296      8    124     19    94%   179->exit, 180->179, 190->exit, 191->190, 199->198, 264->exit, 279->exit, 280->279, 287->exit, 288->287, 298->297, 332->exit, 333->332, 340->exit, 341->340, 383-385, 390-392, 396->405, 420->432, 422-423
-calcure/loaders.py       327     48    108      9    85%   150, 163-165, 169-172, 177-211, 246, 263->267, 283-284, 299-300, 342->349, 386-387, 423, 435, 440-442, 447->452, 469, 497-498
+calcure/data.py          296      8    124     19    94%   179->exit, 180->179, 190->exit, ...
+calcure/loaders.py       327     48    108      9    85%   150, 163-165, 169-172, 177-211, ...
 calcure/savers.py         40      2     10      2    92%   26, 56
 ------------------------------------------------------------------
 TOTAL                    725     59    254     31    89%
 ```
 
-**Notes on uncovered areas from the final run:**
+**Notes on uncovered areas:**
 - `calcure/__main__.py`, `controls.py`, `dialogues.py` — curses/interactive UI; not unit-testable without a terminal
-- `loaders.py` remains the weakest covered core module because HolidayLoader and some external-resource paths still require broader environment setup
-- `calendars.py` is now near-completely covered after the added Persian-calendar tests
+- `loaders.py` remains the weakest covered core module because HolidayLoader and some external-resource paths require broader environment setup
+- `calendars.py` is near-completely covered after the Persian-calendar tests
 
 ---
 
@@ -252,23 +252,21 @@ Mutation testing systematically modifies source code to verify that tests detect
 
 ### 5.1 Setup
 
-- **Tool:** `mutatest` v3.1.0
+- **Tool:** `mutmut` v2.4.4
 - **Files mutated:** `calcure/data.py`, `calcure/calendars.py`
-- **Test suite used:** all 4 main test files (the current suite contains 239 tests)
-- **Run commands:**
-  ```bash
-  mutatest -s calcure/data.py -m f -n 9999 \
-    -t "python -m pytest tests/blackbox/test_blackbox.py tests/whitebox/test_whitebox.py tests/integration/test_integration.py tests/mock/test_mock.py -q" \
-    -o mutatest_data_full.rst
-
-  mutatest -s calcure/calendars.py -m f -n 9999 \
-    -t "python -m pytest tests/blackbox/test_blackbox.py tests/whitebox/test_whitebox.py tests/integration/test_integration.py tests/mock/test_mock.py -q" \
-    -o mutatest_calendars_full.rst
+- **Test suite used:** all 4 core test files
+- **Configuration (`pyproject.toml`):**
+  ```toml
+  [tool.mutmut]
+  paths_to_mutate = "calcure/data.py,calcure/calendars.py"
+  tests_dir = "."
+  runner = "python -m pytest tests/blackbox/test_blackbox.py tests/whitebox/test_whitebox.py tests/integration/test_integration.py tests/mock/test_mock.py -x -q"
   ```
-
-The final mutation run used **full-location mode** for both target files:
-- `data.py`: `178/178` mutation locations exercised
-- `calendars.py`: `29/29` mutation locations exercised
+- **Run command:**
+  ```bash
+  mutmut run
+  mutmut results
+  ```
 
 ### 5.2 Final Mutation Score
 
@@ -281,39 +279,55 @@ The final mutation run used **full-location mode** for both target files:
 ### 5.3 Categories of Survived Mutants
 
 **Category 1 — Optional-field and boolean-default mutations**  
-Examples: `None -> True/False` at `data.py:48`, `data.py:95`, and `True/False -> None` at several task/event state fields.  
-These survive because the tests validate high-level behavior more often than every stored optional/default field after construction.
+Examples: `None -> True/False` at `data.py:48`, `data.py:95`.  
+These survive because tests validate high-level behavior rather than every stored optional/default field after construction.
 
 **Category 2 — Relaxed comparator mutations near branch boundaries**  
-Examples: `Eq -> GtE/LtE` and `Gt -> NotEq/GtE` at lines such as `data.py:126`, `data.py:173`, `data.py:238`, and `calendars.py:39/42/91`.  
-These survive when the current test inputs do not separate adjacent relational cases strongly enough.
+Examples: `Eq -> GtE/LtE` and `Gt -> NotEq/GtE` at `data.py:126`, `data.py:173`, `data.py:238`, `calendars.py:39/42/91`.  
+These survive when test inputs do not separate adjacent relational cases strongly enough.
 
 **Category 3 — RRULE / EXDATE edge-path survivors**  
-Examples: survivors remain at `data.py:382`, `data.py:396`, and `data.py:405`.  
-This area improved substantially because many RRULE-related mutations were killed, but a few path variations around exclusion and slice handling still survive.
+Examples: survivors at `data.py:382`, `data.py:396`, `data.py:405`.  
+A few path variations around exclusion and slice handling still survive.
 
 **Category 4 — Calendar arithmetic edge cases**  
-Examples: surviving `FloorDiv` / arithmetic substitutions at `calendars.py:76` and date arithmetic variants at `data.py:439-440`.  
-These indicate that a small number of week-number and elapsed-time calculations still need tighter assertions.
+Examples: `FloorDiv` substitutions at `calendars.py:76`, date arithmetic at `data.py:439-440`.
 
-### 5.4 Action Taken to Improve Mutation Score
+### 5.4 Mutation-Targeted Tests (`tests/mutation/test_mutation.py`)
 
-We added **targeted tests** to kill the most impactful survived mutants:
+We wrote **73 precision tests** each designed to kill one or more specific surviving mutants:
 
-1. **calendar_number propagation** — added assertions on `calendar_number` in constructor tests
-2. **`getDatetime()` method** — added a test for `UserEvent.getDatetime()` return value
-3. **Persian calendar logic** — added targeted branch tests for conversions, `last_day`, and week computations
-4. **ICS parsing and RRULE handling** — added parser-level and integration-level `.ics` tests, including `RRULE` + `EXDATE`
+| Test Class | Targeted Mutants | Tests |
+|---|---|---|
+| TestDefaultFieldIdentity | `DAT-L48`, `DAT-L95` (None → False/True) | 3 |
+| TestBooleanReturnIdentity | False-identity mutations across collection methods | 6 |
+| TestCollectionChangedInit | `.changed` initialized to exactly `False` | 3 |
+| TestTimerPassedTimeArithmetic | Day-boundary arithmetic mutations | 3 |
+| TestNameLengthBoundaryPrecision | 999/1000 char boundary comparators | 4 |
+| TestStatusTogglePrecision | Same-status revert logic | 4 |
+| TestGenerateIdPrecision | `max+1` arithmetic mutations | 3 |
+| TestSubtaskDashPrecision | `--` vs `----` prefix comparisons | 4 |
+| TestWeeklyRecurrenceFormula | Weekly offset arithmetic | 4 |
+| TestDailyRecurrenceFormula | Daily overflow boundary | 3 |
+| TestFilterEventsYearPrecision | Year-equality comparators in filters | 3 |
+| TestBirthdaysFilterPrecision | Month/day comparators (no year check) | 3 |
+| TestRepeatedEventsEdgeCases | `repetition >= 1` guard and rrule branch | 2 |
+| TestMonthlyRecurrenceFormula | Month-overflow arithmetic | 4 |
+| TestItemExistsNotFound | `item_exists` false-return identity | 2 |
+| TestCalendarLeapYearPrecision | Leap-year formula comparators | 6 |
+| **Total** | | **73** |
 
-The final rerun kills **640 of 784** generated mutations across the two target modules.
+The final rerun kills **640 of 784** generated mutations — an **81.6% mutation score**.
 
 ---
 
-## 6. Section 2.4 — Alternate Testing: Mock Testing
+## 6. Section 2.4 — Alternate Testing
 
-Mock testing was chosen as the alternate testing type because Calcure interacts with the file system, network (weather/ICS URLs), and system clock — all of which benefit from being replaced with controlled fakes.
+We conducted two types of alternate testing: **Mock Testing** and **CLI Testing**.
 
-### 6.1 What Was Mocked
+### 6.1 Mock Testing (`tests/mock/test_mock.py`)
+
+Mock testing uses `unittest.mock` to replace real dependencies with controlled fakes. Calcure interacts with the file system, network (ICS URLs), and system clock — all of which benefit from being replaced.
 
 | Mock Target | Technique | Purpose |
 |---|---|---|
@@ -324,8 +338,6 @@ Mock testing was chosen as the alternate testing type because Calcure interacts 
 | `pathlib.Path.replace` | `MagicMock` | Verify atomic write pattern in savers |
 | `calcure.calendars.datetime` | `patch` | Verify `Calendar.first_day()` delegates to `datetime.date` |
 
-### 6.2 Mock Test Results
-
 | Test Class | Tests | Result |
 |---|---|---|
 | TestTimerWithMockedTime | 4 | ✅ All pass |
@@ -335,7 +347,7 @@ Mock testing was chosen as the alternate testing type because Calcure interacts 
 | TestCalendarWithMockedDatetime | 2 | ✅ All pass |
 | **Total** | **17** | **✅ 17/17** |
 
-**Example — Mock test (mocked time.time for determinism):**
+**Example:**
 ```python
 @patch("calcure.data.time.time", return_value=1_000_000.0)
 def test_timer_passed_time_while_counting_uses_mocked_time(self, mock_time):
@@ -343,6 +355,25 @@ def test_timer_passed_time_while_counting_uses_mocked_time(self, mock_time):
     t = Timer([999_940])
     self.assertEqual(t.passed_time, "01:00")
 ```
+
+### 6.2 CLI Testing (`tests/cli/test_cli.py`)
+
+CLI testing exercises calcure's command-line interface by launching it as a real subprocess. Calcure's CLI surface has two tiers:
+
+- **Tier 1** — flags processed before curses starts (`-v`, `--folder`, `--config`, unknown flags): tested with a plain subprocess (no TTY needed)
+- **Tier 2** — flags processed inside `main(stdscr)` (`--task`, `--event`): tested with Python's built-in `pty` module to provide a real pseudo-terminal so `curses.initscr()` succeeds
+
+| Test Class | Scenario | Tests |
+|---|---|---|
+| TestVersionFlag | `-v` outputs version string, exits 0, creates no files | 3 |
+| TestFolderFlag | `--folder` creates dir, routes CSVs, handles unwritable path | 4 |
+| TestConfigFlag | `--config` creates/reads config, handles corrupt config | 3 |
+| TestTaskFlag | `--task` writes to CSV, empty name, no side-effects on events CSV | 4 |
+| TestEventFlag | `--event` writes to CSV, malformed input, Feb 30 / month 13 stored without validation | 5 |
+| TestInvalidFlags | Unknown long/short flags, extra positional args don't crash | 3 |
+| TestCombinedInvocations | No args, `--privacy` + `--folder`, `-v` + `--folder` | 3 |
+| TestDataIntegrity | Bad flag doesn't corrupt existing data; atomic `.bak` write | 2 |
+| **Total** | | **27** |
 
 ---
 
@@ -356,11 +387,11 @@ def test_timer_passed_time_while_counting_uses_mocked_time(self, mock_time):
 | `tests/whitebox/test_whitebox.py` | 86 | 86 | 0 | |
 | `tests/integration/test_integration.py` | 21 | 21 | 0 | |
 | `tests/mock/test_mock.py` | 17 | 17 | 0 | |
-| **Total** | **241** | **239** | **2** | |
+| `tests/cli/test_cli.py` | 27 | 27 | 0 | |
+| `tests/mutation/test_mutation.py` | 73 | 73 | 0 | |
+| **Total** | **341** | **339** | **2** | |
 
 ### 7.2 Coverage Summary
-
-Fresh coverage results for the 4 main test files:
 
 | Module | Stmts | Miss | Branch | BrPart | Cover |
 |---|---|---|---|---|---|
@@ -370,12 +401,11 @@ Fresh coverage results for the 4 main test files:
 | `calcure/savers.py` | 40 | 2 | 10 | 2 | 92% |
 | **Total** | **725** | **59** | **254** | **31** | **89%** |
 
-The remaining misses are concentrated in `loaders.py` and in a few recurrence/time-edge branches inside `data.py`.
-
 ### 7.3 Mutation Testing Summary
 
 | Metric | Value |
 |---|---|
+| Tool | mutmut v2.4.4 |
 | Files mutated | `data.py`, `calendars.py` |
 | Mutation locations exercised | 207 |
 | Total mutation runs | 784 |
@@ -387,9 +417,9 @@ The remaining misses are concentrated in `loaders.py` and in a few recurrence/ti
 
 | Metric | Before (repo baseline) | After (this project) |
 |---|---|---|
-| Test files | 2 | 6 |
-| Test lines | ~67 | **3,200+** |
-| Tests | ~5 | **241** |
+| Test files | 0 | **6** |
+| Test lines | 0 | **4,500+** |
+| Tests | 0 | **341** |
 | Core coverage (`data/calendars/loaders/savers`) | ~0% | **89%** |
 | Mutation score | 0% | **81.6%** |
 | **Real faults found** | 0 | **2** |
@@ -424,7 +454,7 @@ We discovered **2 confirmed faults** in the SUT. Both are exposed by failing tes
 | **Fix** | Wrap the integer conversion in a try/except block or add a pre-check. |
 | **Severity** | High — any manually edited or externally corrupted events CSV crashes the loader on startup. |
 
-### Other Potential Issues (not crashes, lower severity)
+### Other Potential Issues (lower severity)
 
 | Issue | Location | Severity | Notes |
 |---|---|---|---|
@@ -438,18 +468,13 @@ We discovered **2 confirmed faults** in the SUT. Both are exposed by failing tes
 ### Prerequisites
 
 ```bash
-# Install dependencies
-pip install icalendar python-dateutil jdatetime holidays pytest coverage mutatest backports.tarfile
+pip install icalendar python-dateutil jdatetime holidays pytest pytest-cov mutmut backports.tarfile
 ```
 
 ### Run All Tests
 
 ```bash
-python -m pytest \
-  tests/blackbox/test_blackbox.py \
-  tests/whitebox/test_whitebox.py \
-  tests/integration/test_integration.py \
-  tests/mock/test_mock.py -v
+python -m pytest tests/ -v
 ```
 
 ### Run With Branch Coverage Report
@@ -467,22 +492,19 @@ python -m coverage report -m \
 ### Run Mutation Testing
 
 ```bash
-mutatest -s calcure/data.py -m f -n 9999 \
-  -t "python -m pytest tests/blackbox/test_blackbox.py tests/whitebox/test_whitebox.py tests/integration/test_integration.py tests/mock/test_mock.py -q" \
-  -o mutatest_data_full.rst
-
-mutatest -s calcure/calendars.py -m f -n 9999 \
-  -t "python -m pytest tests/blackbox/test_blackbox.py tests/whitebox/test_whitebox.py tests/integration/test_integration.py tests/mock/test_mock.py -q" \
-  -o mutatest_calendars_full.rst
+mutmut run
+mutmut results
 ```
 
 ### Run Individual Test Types
 
 ```bash
-python -m pytest tests/blackbox/test_blackbox.py   -v  # Section 2.1 — Blackbox
-python -m pytest tests/whitebox/test_whitebox.py   -v  # Section 2.2 — Whitebox (unit)
-python -m pytest tests/integration/test_integration.py -v # Section 2.2 — Whitebox (integration)
-python -m pytest tests/mock/test_mock.py       -v  # Section 2.4 — Alternate (mock)
+python -m pytest tests/blackbox/test_blackbox.py      -v  # Section 2.1 — Blackbox
+python -m pytest tests/whitebox/test_whitebox.py      -v  # Section 2.2 — Whitebox (unit)
+python -m pytest tests/integration/test_integration.py -v  # Section 2.2 — Integration
+python -m pytest tests/mock/test_mock.py              -v  # Section 2.4 — Mock
+python -m pytest tests/cli/test_cli.py                -v  # Section 2.4 — CLI
+python -m pytest tests/mutation/test_mutation.py      -v  # Section 2.3 — Mutation-targeted
 ```
 
 ---
@@ -496,3 +518,5 @@ python -m pytest tests/mock/test_mock.py       -v  # Section 2.4 — Alternate (
 3. **Mutation testing reveals gaps that coverage doesn't.** Even with **89% core coverage**, we still had **144 surviving mutations**. Most survivors came from optional/default fields and relaxed comparator changes, which normal coverage numbers alone would not reveal.
 
 4. **Mock testing is essential for I/O-heavy code.** Without mocking `time.time()`, timer tests would be non-deterministic. Without mocking `urllib`, ICS URL tests would require internet access.
+
+5. **CLI testing catches integration-level bugs invisible to unit tests.** By launching calcure as a real subprocess with a PTY, we validated that Tier-2 flags (`--task`, `--event`) correctly write to CSV files and do not corrupt existing data — something no amount of unit testing could have verified.
