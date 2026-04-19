@@ -59,7 +59,7 @@ cover/
 .mutmut-cache
 mutants/
 mutatest_*.rst
-*.html
+# *.html  # presentation slides are tracked
 
 # Translations
 *.mo
