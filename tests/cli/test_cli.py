@@ -47,8 +47,8 @@ import pytest
 # Constants
 # ---------------------------------------------------------------------------
 
-# Explicit Python 3.11 binary – fall back to PATH lookup if moved.
-PYTHON = shutil.which("python3.11") or "/opt/homebrew/opt/python@3.11/bin/python3.11"
+# Use the same interpreter that is running the test suite.
+PYTHON = sys.executable
 CALCURE = [PYTHON, "-m", "calcure"]
 FIXTURES = Path(__file__).parent / "fixtures"
 
