@@ -989,5 +989,335 @@ class TestCalendarLeapYearPrecision(unittest.TestCase):
         self.assertEqual(days[-1], 29)
 
 
+# ===========================================================================
+# 14. USEREVENT NONE DEFAULTS
+#     Kills: DAT-L74 (8 mutants: None→False/True for hour, minute, rrule,
+#            exdate, calendar_number on UserEvent)
+# ===========================================================================
+
+class TestUserEventNoneDefaults(unittest.TestCase):
+    """
+    UserEvent.__init__ has five keyword args defaulting to None:
+      calendar_number=None, hour=None, minute=None, rrule=None, exdate=None
+    mutatest generates None→False and None→True variants for each.
+    assertIsNone distinguishes None from both False and True.
+    """
+
+    def test_user_event_all_optional_fields_default_to_none(self):
+        """
+        [DAT-L74  c:68,79,92,104,117]  All five None-default fields.
+        Creating a UserEvent with no keyword args must leave every optional
+        field as exactly None (not False, not True).
+        """
+        ev = UserEvent(0, 2024, 3, 1, "Meeting", 1, Frequency.ONCE,
+                       Status.NORMAL, False)
+        self.assertIsNone(ev.calendar_number)
+        self.assertIsNone(ev.hour)
+        self.assertIsNone(ev.minute)
+        self.assertIsNone(ev.rrule)
+        self.assertIsNone(ev.exdate)
+
+    def test_user_event_calendar_number_none_not_falsy(self):
+        """[DAT-L74  c:104]  Identity check — None, not False."""
+        ev = UserEvent(99, 2024, 1, 1, "E", 1, Frequency.ONCE,
+                       Status.NORMAL, True)
+        self.assertIs(ev.calendar_number, None)
+
+
+# ===========================================================================
+# 15. REVERSED-ORDER COLLECTION TESTS
+#     Pattern: insert a *higher-ID* item BEFORE the target so that Eq→GtE
+#     and If_Statement→If_True mutations hit the wrong (first) item.
+#     Kills: DAT-L165 GtE, DAT-L180 GtE+If_True, DAT-L191 GtE,
+#            DAT-L265 GtE, DAT-L280 GtE+If_True, DAT-L288 GtE+If_True,
+#            DAT-L333 GtE+If_True, DAT-L341 GtE+If_True
+# ===========================================================================
+
+class TestReversedOrderCollectionMutants(unittest.TestCase):
+    """
+    All collection methods use `for item in self.items: if item.item_id == id: ... break`.
+    When the target item is always the FIRST satisfying element, Eq→GtE and
+    If_True mutations produce the same first-match behaviour.
+
+    Fix: insert a HIGHER-ID decoy item first, then the target.
+    - GtE (>=target): decoy satisfies the condition first → wrong item affected.
+    - If_True:        decoy is always processed first → wrong item affected.
+    """
+
+    # ── delete_item ──────────────────────────────────────────────────────────
+    def test_delete_item_gteq_hits_decoy_not_target(self):
+        """
+        [DAT-L165  Eq→GtE]  Decoy id=8 is FIRST; target id=3 is second.
+        Mutant (>=3): deletes decoy (8>=3) and breaks → target survives.
+        Original (==3): skips decoy, deletes target → decoy survives.
+        """
+        tasks = Tasks()
+        tasks.add_item(make_task(item_id=8, name="decoy"))   # first
+        tasks.add_item(make_task(item_id=3, name="target"))  # second
+        tasks.delete_item(3)
+        self.assertEqual(len(tasks.items), 1)
+        self.assertEqual(tasks.items[0].name, "decoy")       # decoy must remain
+
+    # ── toggle_item_status ───────────────────────────────────────────────────
+    def test_toggle_status_gteq_and_iftrue_hit_decoy(self):
+        """
+        [DAT-L180  Eq→GtE, If_True]  Decoy id=7 first, target id=3 second.
+        GtE/If_True both process decoy (first item) instead of target.
+        Original changes items[1]; mutants change items[0].
+        """
+        tasks = Tasks()
+        tasks.add_item(make_task(item_id=7, name="decoy"))
+        tasks.add_item(make_task(item_id=3, name="target"))
+        tasks.toggle_item_status(3, Status.DONE)
+        self.assertEqual(tasks.items[0].status, Status.NORMAL)  # decoy untouched
+        self.assertEqual(tasks.items[1].status, Status.DONE)    # target changed
+
+    # ── toggle_item_privacy ──────────────────────────────────────────────────
+    def test_toggle_privacy_gteq_hits_decoy(self):
+        """
+        [DAT-L191  Eq→GtE]  Decoy id=9 first, target id=2 second.
+        GtE: decoy (9>=2) gets toggled instead of target.
+        """
+        tasks = Tasks()
+        tasks.add_item(make_task(item_id=9, privacy=False))   # decoy first
+        tasks.add_item(make_task(item_id=2, privacy=False))   # target
+        tasks.toggle_item_privacy(2)
+        self.assertFalse(tasks.items[0].privacy)   # decoy unchanged
+        self.assertTrue(tasks.items[1].privacy)    # target flipped
+
+    # ── add_timestamp_for_task ───────────────────────────────────────────────
+    def test_add_timestamp_gteq_hits_decoy(self):
+        """
+        [DAT-L265  Eq→GtE]  Decoy id=5 first, target id=0 second.
+        GtE (>=0): decoy (5>=0) gets the timestamp stamp instead of target.
+        """
+        tasks = Tasks()
+        tasks.add_item(make_task(item_id=5))   # decoy
+        tasks.add_item(make_task(item_id=0))   # target
+        tasks.add_timestamp_for_task(0)
+        self.assertEqual(tasks.items[0].timer.stamps, [])  # decoy untouched
+        self.assertEqual(len(tasks.items[1].timer.stamps), 1)
+
+    # ── reset_timer_for_task ─────────────────────────────────────────────────
+    def test_reset_timer_gteq_and_iftrue_hit_decoy(self):
+        """
+        [DAT-L280  Eq→GtE, If_True]  Decoy id=5, target id=0.
+        After seeding both with stamps, reset(0):
+          Original → target stamps cleared, decoy intact.
+          Mutant   → decoy stamps cleared (wrong item), target still has stamps.
+        """
+        tasks = Tasks()
+        tasks.add_item(make_task(item_id=5))
+        tasks.add_item(make_task(item_id=0))
+        tasks.add_timestamp_for_task(5)
+        tasks.add_timestamp_for_task(0)
+        decoy_stamps_before = len(tasks.items[0].timer.stamps)
+        tasks.reset_timer_for_task(0)
+        # decoy must still have its stamps
+        self.assertEqual(len(tasks.items[0].timer.stamps), decoy_stamps_before)
+        # target must be cleared
+        self.assertEqual(tasks.items[1].timer.stamps, [])
+
+    def test_reset_timer_lteq_hits_lower_id_decoy(self):
+        """
+        [DAT-L280  Eq→LtE]  Items in forward order [id=0, id=5], reset(5).
+        LtE (<=5): id=0 satisfies 0<=5, so decoy (id=0) gets cleared first.
+        Original: skips id=0, clears id=5.
+        """
+        tasks = Tasks()
+        tasks.add_item(make_task(item_id=0))
+        tasks.add_item(make_task(item_id=5))
+        tasks.add_timestamp_for_task(0)
+        tasks.add_timestamp_for_task(5)
+        decoy_stamps = len(tasks.items[0].timer.stamps)
+        tasks.reset_timer_for_task(5)
+        self.assertEqual(len(tasks.items[0].timer.stamps), decoy_stamps)  # decoy untouched
+        self.assertEqual(tasks.items[1].timer.stamps, [])                 # target cleared
+
+    # ── change_deadline ──────────────────────────────────────────────────────
+    def test_change_deadline_gteq_and_iftrue_hit_decoy(self):
+        """
+        [DAT-L288  Eq→GtE, If_True]  Decoy id=9, target id=1.
+        GtE/If_True both modify decoy's deadline instead of target's.
+        """
+        tasks = Tasks()
+        tasks.add_item(make_task(item_id=9, year=0, month=0, day=0))
+        tasks.add_item(make_task(item_id=1, year=0, month=0, day=0))
+        tasks.change_deadline(1, 2025, 12, 31)
+        self.assertEqual(
+            (tasks.items[0].year, tasks.items[0].month, tasks.items[0].day),
+            (0, 0, 0))           # decoy deadline unchanged
+        self.assertEqual(
+            (tasks.items[1].year, tasks.items[1].month, tasks.items[1].day),
+            (2025, 12, 31))      # target deadline set
+
+    def test_change_deadline_lteq_hits_lower_id(self):
+        """
+        [DAT-L288  Eq→LtE]  Forward order [id=0, id=5], change_deadline(5).
+        LtE: id=0 (0<=5) gets deadline changed instead of id=5.
+        """
+        tasks = Tasks()
+        tasks.add_item(make_task(item_id=0, year=0, month=0, day=0))
+        tasks.add_item(make_task(item_id=5, year=0, month=0, day=0))
+        tasks.change_deadline(5, 2025, 6, 15)
+        self.assertEqual(
+            (tasks.items[0].year, tasks.items[0].month, tasks.items[0].day),
+            (0, 0, 0))           # id=0 must not change
+        self.assertEqual(
+            (tasks.items[1].year, tasks.items[1].month, tasks.items[1].day),
+            (2025, 6, 15))
+
+    # ── Events.change_day ────────────────────────────────────────────────────
+    def test_change_day_gteq_and_iftrue_hit_decoy(self):
+        """
+        [DAT-L333  Eq→GtE, If_True]  Decoy event id=9, target event id=2.
+        GtE/If_True both modify decoy's day instead of target's.
+        """
+        events = Events()
+        events.add_item(make_event(item_id=9, day=1))
+        events.add_item(make_event(item_id=2, day=1))
+        events.change_day(2, 28)
+        self.assertEqual(events.items[0].day, 1)   # decoy unchanged
+        self.assertEqual(events.items[1].day, 28)  # target updated
+
+    def test_change_day_lteq_hits_lower_id(self):
+        """
+        [DAT-L333  Eq→LtE]  Forward order [id=0, id=5], change_day(5).
+        LtE: id=0 (0<=5) gets its day changed instead of id=5.
+        """
+        events = Events()
+        events.add_item(make_event(item_id=0, day=1))
+        events.add_item(make_event(item_id=5, day=1))
+        events.change_day(5, 20)
+        self.assertEqual(events.items[0].day, 1)   # id=0 unchanged
+        self.assertEqual(events.items[1].day, 20)  # id=5 updated
+
+    # ── Events.change_date ───────────────────────────────────────────────────
+    def test_change_date_gteq_and_iftrue_hit_decoy(self):
+        """
+        [DAT-L341  Eq→GtE, If_True]  Decoy event id=7, target event id=1.
+        """
+        events = Events()
+        events.add_item(make_event(item_id=7, year=2024, month=1, day=1))
+        events.add_item(make_event(item_id=1, year=2024, month=1, day=1))
+        events.change_date(1, 2025, 6, 15)
+        self.assertEqual(
+            (events.items[0].year, events.items[0].month, events.items[0].day),
+            (2024, 1, 1))               # decoy unchanged
+        self.assertEqual(
+            (events.items[1].year, events.items[1].month, events.items[1].day),
+            (2025, 6, 15))              # target updated
+
+    def test_change_date_lteq_hits_lower_id(self):
+        """
+        [DAT-L341  Eq→LtE]  Forward order [id=0, id=5], change_date(5).
+        LtE: id=0 (0<=5) gets date changed instead of id=5.
+        """
+        events = Events()
+        events.add_item(make_event(item_id=0, year=2024, month=1, day=1))
+        events.add_item(make_event(item_id=5, year=2024, month=1, day=1))
+        events.change_date(5, 2025, 6, 15)
+        self.assertEqual(
+            (events.items[0].year, events.items[0].month, events.items[0].day),
+            (2024, 1, 1))
+        self.assertEqual(
+            (events.items[1].year, events.items[1].month, events.items[1].day),
+            (2025, 6, 15))
+
+
+# ===========================================================================
+# 16. ITEM_EXISTS STRING COMPARISON  (Eq→LtE)
+#     Kills: DAT-L199  c:15
+# ===========================================================================
+
+class TestItemExistsStringLtE(unittest.TestCase):
+    """
+    item_exists checks `item.name == item_name`.
+    Eq→LtE mutant: `item.name <= item_name`.
+    A stored name that is lexicographically LESS than the query satisfies <=
+    but not ==, so item_exists should return False but mutant returns True.
+    """
+
+    def test_item_exists_false_when_stored_name_is_lexicographically_less(self):
+        """
+        [DAT-L199  Eq→LtE]  "Apple" < "Banana" in string order.
+        Original: "Apple" == "Banana" → False.
+        LtE mutant: "Apple" <= "Banana" → True (WRONG).
+        """
+        tasks = Tasks()
+        tasks.add_item(make_task(name="Apple"))
+        self.assertFalse(tasks.item_exists("Banana"))
+
+    def test_item_exists_false_empty_then_alphabetically_later_query(self):
+        """[DAT-L199  Eq→LtE]  'aardvark' < 'zebra'."""
+        tasks = Tasks()
+        tasks.add_item(make_task(name="aardvark"))
+        self.assertFalse(tasks.item_exists("zebra"))
+
+
+# ===========================================================================
+# 17. EVENT_EXISTS NAME GtE
+#     Kills: DAT-L323  c:16
+# ===========================================================================
+
+class TestEventExistsNameGtE(unittest.TestCase):
+    """
+    event_exists checks event.name == new_event.name (and year/month/day).
+    Eq→GtE mutant: event.name >= new_event.name.
+    A stored event whose name sorts AFTER the query name satisfies >= but not ==.
+    """
+
+    def test_event_exists_false_when_stored_name_sorts_after_query(self):
+        """
+        [DAT-L323  Eq→GtE]  "Zebra" > "Aardvark".
+        Original: "Zebra" == "Aardvark" → False.
+        GtE mutant: "Zebra" >= "Aardvark" → True (WRONG), same year/month/day.
+        """
+        events = Events()
+        events.add_item(make_event(name="Zebra", year=2024, month=3, day=1))
+        query = make_event(name="Aardvark", year=2024, month=3, day=1)
+        self.assertFalse(events.event_exists(query))
+
+
+# ===========================================================================
+# 18. TOGGLE_SUBTASK_STATE LtE PRECISION
+#     Kills: DAT-L298 c:15, DAT-L299 c:19
+# ===========================================================================
+
+class TestToggleSubtaskLtE(unittest.TestCase):
+    """
+    toggle_subtask_state has NO break, so Eq→LtE would toggle every item
+    whose id <= selected_task_id instead of only the exact match.
+    L298: item.item_id == selected_task_id  → LtE
+    L299: item.name[:2] == '--'             → LtE (string comparison)
+    """
+
+    def test_toggle_subtask_lteq_id_only_touches_target(self):
+        """
+        [DAT-L298  Eq→LtE]  items [id=0 "Regular", id=5 "Regular"], toggle(5).
+        Original: only id=5 becomes "--Regular".
+        LtE (<=5): both id=0 and id=5 become "--Regular".
+        """
+        tasks = Tasks()
+        tasks.add_item(make_task(item_id=0, name="Regular"))
+        tasks.add_item(make_task(item_id=5, name="Regular"))
+        tasks.toggle_subtask_state(5)
+        self.assertEqual(tasks.items[0].name, "Regular")   # id=0 unchanged
+        self.assertEqual(tasks.items[1].name, "--Regular") # id=5 toggled
+
+    def test_toggle_subtask_name_lteq_does_not_strip_normal_prefix(self):
+        """
+        [DAT-L299  Eq→LtE]  item.name[:2] == '--' → <= '--'.
+        '!!' has ASCII 33, '-' has ASCII 45: '!!' < '--' so LtE treats '!!'
+        as if it were a subtask and strips the first 2 chars.
+        Original: '!!' != '--' → adds '--' prefix → '--!!task'.
+        LtE mutant: '!!' <= '--' → True → strips → 'task' (WRONG).
+        """
+        tasks = Tasks()
+        tasks.add_item(make_task(item_id=0, name="!!task"))
+        tasks.toggle_subtask_state(0)
+        self.assertEqual(tasks.items[0].name, "--!!task")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

@@ -1,0 +1,730 @@
+Mutatest diagnostic summary
+===========================
+ - Source location: /Users/harshal/Desktop/stproject/calcure/calcure/data.py
+ - Test commands: ['python3.11', '-m', 'pytest', 'tests/blackbox/test_blackbox.py', 'tests/whitebox/test_whitebox.py', 'tests/integration/test_integration.py', 'tests/mock/test_mock.py', 'tests/mutation/test_mutation.py', '-q', '--deselect', 'tests/blackbox/test_blackbox.py::TestTaskManagement::test_add_task_whitespace_only_name_rejected', '--deselect', 'tests/blackbox/test_blackbox.py::TestDataPersistence::test_event_loader_malformed_csv_does_not_crash']
+ - Mode: f
+ - Excluded files: []
+ - N locations input: 9999
+ - Random seed: None
+
+Random sample details
+---------------------
+ - Total locations mutated: 188
+ - Total locations identified: 188
+ - Location sample coverage: 100.00 %
+
+
+Running time details
+--------------------
+ - Clean trial 1 run time: 0:00:00.258794
+ - Clean trial 2 run time: 0:00:00.269231
+ - Mutation trials total run time: 0:03:58.868587
+
+Overall mutation trial summary
+==============================
+ - DETECTED: 616
+ - SURVIVED: 67
+ - TIMEOUT: 2
+ - TOTAL RUNS: 685
+ - RUN DATETIME: 2026-04-19 21:52:59.609218
+
+
+Mutations by result status
+==========================
+
+
+SURVIVED
+--------
+ - calcure/data.py: (l: 112, c: 46) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 126, c: 15) - mutation from <class 'ast.Gt'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 126, c: 15) - mutation from <class 'ast.Gt'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 126, c: 29) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 131, c: 27) - mutation from <class 'ast.Sub'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 145, c: 34) - mutation from <class 'ast.FloorDiv'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 173, c: 52) - mutation from <class 'ast.Gt'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 216, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 256, c: 26) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 258, c: 11) - mutation from <class 'ast.Gt'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 382, c: 16) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 382, c: 16) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 382, c: 19) - mutation from <class 'ast.NotIn'> to <class 'ast.In'>
+ - calcure/data.py: (l: 382, c: 19) - mutation from <class 'ast.And'> to <class 'ast.Or'>
+ - calcure/data.py: (l: 382, c: 50) - mutation from <class 'ast.NotIn'> to <class 'ast.In'>
+ - calcure/data.py: (l: 383, c: 33) - mutation from <class 'ast.Add'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 383, c: 33) - mutation from <class 'ast.Add'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 383, c: 33) - mutation from <class 'ast.Add'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 383, c: 33) - mutation from <class 'ast.Add'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 383, c: 33) - mutation from <class 'ast.Add'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 383, c: 33) - mutation from <class 'ast.Add'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 385, c: 20) - mutation from AugAssign_Add to AugAssign_Mult
+ - calcure/data.py: (l: 385, c: 20) - mutation from AugAssign_Add to AugAssign_Div
+ - calcure/data.py: (l: 385, c: 20) - mutation from AugAssign_Add to AugAssign_Sub
+ - calcure/data.py: (l: 385, c: 35) - mutation from <class 'ast.Add'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 385, c: 35) - mutation from <class 'ast.Add'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 385, c: 35) - mutation from <class 'ast.Add'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 385, c: 35) - mutation from <class 'ast.Add'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 385, c: 35) - mutation from <class 'ast.Add'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 385, c: 35) - mutation from <class 'ast.Add'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 396, c: 16) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 405, c: 28) - mutation from Slice_UnboundUpper to Slice_Unbounded
+ - calcure/data.py: (l: 417, c: 8) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 421, c: 16) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 421, c: 19) - mutation from <class 'ast.Add'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 421, c: 19) - mutation from <class 'ast.Add'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 421, c: 19) - mutation from <class 'ast.Add'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 421, c: 19) - mutation from <class 'ast.Gt'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 421, c: 19) - mutation from <class 'ast.Gt'> to <class 'ast.Eq'>
+ - calcure/data.py: (l: 422, c: 27) - mutation from <class 'ast.Add'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 422, c: 27) - mutation from <class 'ast.Add'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 422, c: 27) - mutation from <class 'ast.Add'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 422, c: 27) - mutation from <class 'ast.Add'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 422, c: 27) - mutation from <class 'ast.Add'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 422, c: 27) - mutation from <class 'ast.Add'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 423, c: 28) - mutation from <class 'ast.Sub'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 423, c: 28) - mutation from <class 'ast.Sub'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 423, c: 28) - mutation from <class 'ast.Sub'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 423, c: 28) - mutation from <class 'ast.Sub'> to <class 'ast.Add'>
+ - calcure/data.py: (l: 423, c: 28) - mutation from <class 'ast.Sub'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 423, c: 28) - mutation from <class 'ast.Sub'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 425, c: 81) - mutation from <class 'ast.Add'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 428, c: 34) - mutation from <class 'ast.Add'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 428, c: 34) - mutation from <class 'ast.Add'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 428, c: 34) - mutation from <class 'ast.Add'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 428, c: 34) - mutation from <class 'ast.Add'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 428, c: 34) - mutation from <class 'ast.Add'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 428, c: 34) - mutation from <class 'ast.Add'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 437, c: 8) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 438, c: 12) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 438, c: 15) - mutation from <class 'ast.Gt'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 438, c: 15) - mutation from <class 'ast.Gt'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 440, c: 36) - mutation from <class 'ast.Mult'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 440, c: 36) - mutation from <class 'ast.Mult'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 440, c: 36) - mutation from <class 'ast.Mult'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 440, c: 40) - mutation from <class 'ast.Sub'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 440, c: 40) - mutation from <class 'ast.Sub'> to <class 'ast.FloorDiv'>
+
+
+TIMEOUT
+-------
+ - calcure/data.py: (l: 158, c: 8) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 158, c: 11) - mutation from <class 'ast.Gt'> to <class 'ast.Eq'>
+
+
+DETECTED
+--------
+ - calcure/data.py: (l: 48, c: 102) - mutation from None to False
+ - calcure/data.py: (l: 48, c: 102) - mutation from None to True
+ - calcure/data.py: (l: 74, c: 68) - mutation from None to False
+ - calcure/data.py: (l: 74, c: 68) - mutation from None to True
+ - calcure/data.py: (l: 74, c: 79) - mutation from None to True
+ - calcure/data.py: (l: 74, c: 79) - mutation from None to False
+ - calcure/data.py: (l: 74, c: 92) - mutation from None to False
+ - calcure/data.py: (l: 74, c: 92) - mutation from None to True
+ - calcure/data.py: (l: 74, c: 104) - mutation from None to False
+ - calcure/data.py: (l: 74, c: 104) - mutation from None to True
+ - calcure/data.py: (l: 74, c: 117) - mutation from None to True
+ - calcure/data.py: (l: 74, c: 117) - mutation from None to False
+ - calcure/data.py: (l: 89, c: 66) - mutation from <class 'ast.Or'> to <class 'ast.And'>
+ - calcure/data.py: (l: 89, c: 82) - mutation from <class 'ast.Or'> to <class 'ast.And'>
+ - calcure/data.py: (l: 95, c: 89) - mutation from None to False
+ - calcure/data.py: (l: 95, c: 89) - mutation from None to True
+ - calcure/data.py: (l: 112, c: 15) - mutation from False to None
+ - calcure/data.py: (l: 112, c: 15) - mutation from False to True
+ - calcure/data.py: (l: 112, c: 46) - mutation from <class 'ast.Mod'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 112, c: 46) - mutation from <class 'ast.Mod'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 112, c: 46) - mutation from <class 'ast.Mod'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 112, c: 46) - mutation from <class 'ast.Mod'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 112, c: 46) - mutation from <class 'ast.Mod'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 112, c: 46) - mutation from <class 'ast.Mod'> to <class 'ast.Add'>
+ - calcure/data.py: (l: 112, c: 46) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 112, c: 46) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 112, c: 46) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 112, c: 46) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 117, c: 15) - mutation from True to False
+ - calcure/data.py: (l: 117, c: 15) - mutation from True to None
+ - calcure/data.py: (l: 117, c: 40) - mutation from False to True
+ - calcure/data.py: (l: 117, c: 40) - mutation from False to None
+ - calcure/data.py: (l: 126, c: 12) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 126, c: 12) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 126, c: 15) - mutation from <class 'ast.Gt'> to <class 'ast.Eq'>
+ - calcure/data.py: (l: 126, c: 15) - mutation from <class 'ast.Gt'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 126, c: 15) - mutation from <class 'ast.Gt'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 126, c: 15) - mutation from <class 'ast.And'> to <class 'ast.Or'>
+ - calcure/data.py: (l: 126, c: 29) - mutation from <class 'ast.Mod'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 126, c: 29) - mutation from <class 'ast.Mod'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 126, c: 29) - mutation from <class 'ast.Mod'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 126, c: 29) - mutation from <class 'ast.Mod'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 126, c: 29) - mutation from <class 'ast.Mod'> to <class 'ast.Add'>
+ - calcure/data.py: (l: 126, c: 29) - mutation from <class 'ast.Mod'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 126, c: 29) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 126, c: 29) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 126, c: 29) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 126, c: 29) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 127, c: 16) - mutation from AugAssign_Add to AugAssign_Sub
+ - calcure/data.py: (l: 127, c: 16) - mutation from AugAssign_Add to AugAssign_Mult
+ - calcure/data.py: (l: 127, c: 16) - mutation from AugAssign_Add to AugAssign_Div
+ - calcure/data.py: (l: 127, c: 31) - mutation from <class 'ast.Sub'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 127, c: 31) - mutation from <class 'ast.Sub'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 127, c: 31) - mutation from <class 'ast.Sub'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 127, c: 31) - mutation from <class 'ast.Sub'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 127, c: 31) - mutation from <class 'ast.Sub'> to <class 'ast.Add'>
+ - calcure/data.py: (l: 127, c: 31) - mutation from <class 'ast.Sub'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 127, c: 77) - mutation from <class 'ast.Sub'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 127, c: 77) - mutation from <class 'ast.Sub'> to <class 'ast.Add'>
+ - calcure/data.py: (l: 127, c: 77) - mutation from <class 'ast.Sub'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 127, c: 77) - mutation from <class 'ast.Sub'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 127, c: 77) - mutation from <class 'ast.Sub'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 127, c: 77) - mutation from <class 'ast.Sub'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 130, c: 8) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 130, c: 8) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 131, c: 12) - mutation from AugAssign_Add to AugAssign_Sub
+ - calcure/data.py: (l: 131, c: 12) - mutation from AugAssign_Add to AugAssign_Mult
+ - calcure/data.py: (l: 131, c: 12) - mutation from AugAssign_Add to AugAssign_Div
+ - calcure/data.py: (l: 131, c: 27) - mutation from <class 'ast.Sub'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 131, c: 27) - mutation from <class 'ast.Sub'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 131, c: 27) - mutation from <class 'ast.Sub'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 131, c: 27) - mutation from <class 'ast.Sub'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 131, c: 27) - mutation from <class 'ast.Sub'> to <class 'ast.Add'>
+ - calcure/data.py: (l: 134, c: 19) - mutation from <class 'ast.Mult'> to <class 'ast.Add'>
+ - calcure/data.py: (l: 134, c: 19) - mutation from <class 'ast.Mult'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 134, c: 19) - mutation from <class 'ast.Mult'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 134, c: 19) - mutation from <class 'ast.Mult'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 134, c: 19) - mutation from <class 'ast.Mult'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 134, c: 19) - mutation from <class 'ast.Mult'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 135, c: 18) - mutation from <class 'ast.Mult'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 135, c: 18) - mutation from <class 'ast.Mult'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 135, c: 18) - mutation from <class 'ast.Mult'> to <class 'ast.Add'>
+ - calcure/data.py: (l: 135, c: 18) - mutation from <class 'ast.Mult'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 135, c: 18) - mutation from <class 'ast.Mult'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 135, c: 18) - mutation from <class 'ast.Mult'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 136, c: 8) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 136, c: 8) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 136, c: 11) - mutation from <class 'ast.Lt'> to <class 'ast.Eq'>
+ - calcure/data.py: (l: 136, c: 11) - mutation from <class 'ast.Lt'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 136, c: 11) - mutation from <class 'ast.Lt'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 136, c: 11) - mutation from <class 'ast.Lt'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 136, c: 11) - mutation from <class 'ast.Lt'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 142, c: 8) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 142, c: 8) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 142, c: 11) - mutation from <class 'ast.Mult'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 142, c: 11) - mutation from <class 'ast.Mult'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 142, c: 11) - mutation from <class 'ast.Mult'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 142, c: 11) - mutation from <class 'ast.Mult'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 142, c: 11) - mutation from <class 'ast.Mult'> to <class 'ast.Add'>
+ - calcure/data.py: (l: 142, c: 11) - mutation from <class 'ast.Mult'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 142, c: 11) - mutation from <class 'ast.Gt'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 142, c: 11) - mutation from <class 'ast.Gt'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 142, c: 11) - mutation from <class 'ast.Gt'> to <class 'ast.Eq'>
+ - calcure/data.py: (l: 142, c: 11) - mutation from <class 'ast.Gt'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 142, c: 11) - mutation from <class 'ast.Gt'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 143, c: 26) - mutation from <class 'ast.Add'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 143, c: 26) - mutation from <class 'ast.Add'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 143, c: 26) - mutation from <class 'ast.Add'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 143, c: 26) - mutation from <class 'ast.Add'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 143, c: 26) - mutation from <class 'ast.Add'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 143, c: 26) - mutation from <class 'ast.Add'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 144, c: 8) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 144, c: 8) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 144, c: 11) - mutation from <class 'ast.GtE'> to <class 'ast.Eq'>
+ - calcure/data.py: (l: 144, c: 11) - mutation from <class 'ast.GtE'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 144, c: 11) - mutation from <class 'ast.GtE'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 144, c: 11) - mutation from <class 'ast.GtE'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 144, c: 11) - mutation from <class 'ast.GtE'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 144, c: 26) - mutation from <class 'ast.Mult'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 144, c: 26) - mutation from <class 'ast.Mult'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 144, c: 26) - mutation from <class 'ast.Mult'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 144, c: 26) - mutation from <class 'ast.Mult'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 144, c: 26) - mutation from <class 'ast.Mult'> to <class 'ast.Add'>
+ - calcure/data.py: (l: 144, c: 26) - mutation from <class 'ast.Mult'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 145, c: 26) - mutation from <class 'ast.Add'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 145, c: 26) - mutation from <class 'ast.Add'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 145, c: 26) - mutation from <class 'ast.Add'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 145, c: 26) - mutation from <class 'ast.Add'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 145, c: 26) - mutation from <class 'ast.Add'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 145, c: 26) - mutation from <class 'ast.Add'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 145, c: 26) - mutation from <class 'ast.Add'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 145, c: 26) - mutation from <class 'ast.Add'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 145, c: 26) - mutation from <class 'ast.Add'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 145, c: 26) - mutation from <class 'ast.Add'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 145, c: 26) - mutation from <class 'ast.Add'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 145, c: 26) - mutation from <class 'ast.Add'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 145, c: 34) - mutation from <class 'ast.FloorDiv'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 145, c: 34) - mutation from <class 'ast.FloorDiv'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 145, c: 34) - mutation from <class 'ast.FloorDiv'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 145, c: 34) - mutation from <class 'ast.FloorDiv'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 145, c: 34) - mutation from <class 'ast.FloorDiv'> to <class 'ast.Add'>
+ - calcure/data.py: (l: 154, c: 23) - mutation from False to True
+ - calcure/data.py: (l: 154, c: 23) - mutation from False to None
+ - calcure/data.py: (l: 158, c: 8) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 158, c: 11) - mutation from <class 'ast.And'> to <class 'ast.Or'>
+ - calcure/data.py: (l: 158, c: 41) - mutation from <class 'ast.NotEq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 158, c: 41) - mutation from <class 'ast.NotEq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 158, c: 41) - mutation from <class 'ast.NotEq'> to <class 'ast.Eq'>
+ - calcure/data.py: (l: 158, c: 41) - mutation from <class 'ast.NotEq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 158, c: 41) - mutation from <class 'ast.NotEq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 160, c: 27) - mutation from True to False
+ - calcure/data.py: (l: 160, c: 27) - mutation from True to None
+ - calcure/data.py: (l: 165, c: 12) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 165, c: 12) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 165, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 165, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 165, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 165, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 165, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 167, c: 31) - mutation from True to None
+ - calcure/data.py: (l: 167, c: 31) - mutation from True to False
+ - calcure/data.py: (l: 173, c: 12) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 173, c: 12) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 173, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 173, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 173, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 173, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 173, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 173, c: 15) - mutation from <class 'ast.And'> to <class 'ast.Or'>
+ - calcure/data.py: (l: 173, c: 52) - mutation from <class 'ast.Gt'> to <class 'ast.Eq'>
+ - calcure/data.py: (l: 173, c: 52) - mutation from <class 'ast.Gt'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 173, c: 52) - mutation from <class 'ast.Gt'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 173, c: 52) - mutation from <class 'ast.Gt'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 175, c: 31) - mutation from True to False
+ - calcure/data.py: (l: 175, c: 31) - mutation from True to None
+ - calcure/data.py: (l: 180, c: 12) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 180, c: 12) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 180, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 180, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 180, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 180, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 180, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 181, c: 16) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 181, c: 16) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 181, c: 19) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 181, c: 19) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 181, c: 19) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 181, c: 19) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 181, c: 19) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 185, c: 31) - mutation from True to None
+ - calcure/data.py: (l: 185, c: 31) - mutation from True to False
+ - calcure/data.py: (l: 191, c: 12) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 191, c: 12) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 191, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 191, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 191, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 191, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 191, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 193, c: 31) - mutation from True to False
+ - calcure/data.py: (l: 193, c: 31) - mutation from True to None
+ - calcure/data.py: (l: 199, c: 12) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 199, c: 12) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 199, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 199, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 199, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 199, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 199, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 200, c: 23) - mutation from True to None
+ - calcure/data.py: (l: 200, c: 23) - mutation from True to False
+ - calcure/data.py: (l: 201, c: 15) - mutation from False to None
+ - calcure/data.py: (l: 201, c: 15) - mutation from False to True
+ - calcure/data.py: (l: 207, c: 27) - mutation from True to False
+ - calcure/data.py: (l: 207, c: 27) - mutation from True to None
+ - calcure/data.py: (l: 212, c: 23) - mutation from True to False
+ - calcure/data.py: (l: 212, c: 23) - mutation from True to None
+ - calcure/data.py: (l: 216, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 216, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 216, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 216, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 220, c: 8) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 220, c: 8) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 220, c: 11) - mutation from <class 'ast.Is'> to <class 'ast.IsNot'>
+ - calcure/data.py: (l: 220, c: 21) - mutation from None to False
+ - calcure/data.py: (l: 220, c: 21) - mutation from None to True
+ - calcure/data.py: (l: 221, c: 19) - mutation from False to True
+ - calcure/data.py: (l: 221, c: 19) - mutation from False to None
+ - calcure/data.py: (l: 222, c: 15) - mutation from <class 'ast.LtE'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 222, c: 15) - mutation from <class 'ast.LtE'> to <class 'ast.Eq'>
+ - calcure/data.py: (l: 222, c: 15) - mutation from <class 'ast.LtE'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 222, c: 15) - mutation from <class 'ast.LtE'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 222, c: 15) - mutation from <class 'ast.LtE'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 228, c: 12) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 228, c: 12) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 228, c: 16) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 228, c: 16) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 228, c: 16) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 228, c: 16) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 228, c: 16) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 228, c: 16) - mutation from <class 'ast.And'> to <class 'ast.Or'>
+ - calcure/data.py: (l: 229, c: 20) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 229, c: 20) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 229, c: 20) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 229, c: 20) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 229, c: 20) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 230, c: 20) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 230, c: 20) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 230, c: 20) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 230, c: 20) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 230, c: 20) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 238, c: 12) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 238, c: 12) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 238, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 238, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 238, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 238, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 238, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 238, c: 15) - mutation from <class 'ast.And'> to <class 'ast.Or'>
+ - calcure/data.py: (l: 238, c: 47) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 238, c: 47) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 238, c: 47) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 238, c: 47) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 238, c: 47) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 250, c: 12) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 250, c: 12) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 251, c: 23) - mutation from True to None
+ - calcure/data.py: (l: 251, c: 23) - mutation from True to False
+ - calcure/data.py: (l: 252, c: 15) - mutation from False to None
+ - calcure/data.py: (l: 252, c: 15) - mutation from False to True
+ - calcure/data.py: (l: 256, c: 26) - mutation from Slice_UnboundLower to Slice_Unbounded
+ - calcure/data.py: (l: 256, c: 26) - mutation from Slice_UnboundLower to Slice_UnboundUpper
+ - calcure/data.py: (l: 256, c: 26) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 256, c: 26) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 256, c: 26) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 256, c: 26) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 257, c: 20) - mutation from <class 'ast.Add'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 257, c: 20) - mutation from <class 'ast.Add'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 257, c: 20) - mutation from <class 'ast.Add'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 257, c: 20) - mutation from <class 'ast.Add'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 257, c: 20) - mutation from <class 'ast.Add'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 257, c: 20) - mutation from <class 'ast.Add'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 258, c: 8) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 258, c: 8) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 258, c: 11) - mutation from <class 'ast.Gt'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 258, c: 11) - mutation from <class 'ast.Gt'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 258, c: 11) - mutation from <class 'ast.Gt'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 258, c: 11) - mutation from <class 'ast.Gt'> to <class 'ast.Eq'>
+ - calcure/data.py: (l: 259, c: 30) - mutation from <class 'ast.Add'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 259, c: 30) - mutation from <class 'ast.Add'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 259, c: 30) - mutation from <class 'ast.Add'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 259, c: 30) - mutation from <class 'ast.Add'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 259, c: 30) - mutation from <class 'ast.Add'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 259, c: 30) - mutation from <class 'ast.Add'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 260, c: 27) - mutation from True to False
+ - calcure/data.py: (l: 260, c: 27) - mutation from True to None
+ - calcure/data.py: (l: 265, c: 12) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 265, c: 12) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 265, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 265, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 265, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 265, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 265, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 267, c: 31) - mutation from True to False
+ - calcure/data.py: (l: 267, c: 31) - mutation from True to None
+ - calcure/data.py: (l: 273, c: 12) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 273, c: 12) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 273, c: 15) - mutation from <class 'ast.And'> to <class 'ast.Or'>
+ - calcure/data.py: (l: 273, c: 42) - mutation from <class 'ast.NotEq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 273, c: 42) - mutation from <class 'ast.NotEq'> to <class 'ast.Eq'>
+ - calcure/data.py: (l: 273, c: 42) - mutation from <class 'ast.NotEq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 273, c: 42) - mutation from <class 'ast.NotEq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 273, c: 42) - mutation from <class 'ast.NotEq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 275, c: 31) - mutation from True to False
+ - calcure/data.py: (l: 275, c: 31) - mutation from True to None
+ - calcure/data.py: (l: 280, c: 12) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 280, c: 12) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 280, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 280, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 280, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 280, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 280, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 282, c: 31) - mutation from True to None
+ - calcure/data.py: (l: 282, c: 31) - mutation from True to False
+ - calcure/data.py: (l: 288, c: 12) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 288, c: 12) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 288, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 288, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 288, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 288, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 288, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 292, c: 31) - mutation from True to False
+ - calcure/data.py: (l: 292, c: 31) - mutation from True to None
+ - calcure/data.py: (l: 298, c: 12) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 298, c: 12) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 298, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 298, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 298, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 298, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 298, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 299, c: 16) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 299, c: 16) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 299, c: 19) - mutation from Slice_UnboundLower to Slice_Unbounded
+ - calcure/data.py: (l: 299, c: 19) - mutation from Slice_UnboundLower to Slice_UnboundUpper
+ - calcure/data.py: (l: 299, c: 19) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 299, c: 19) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 299, c: 19) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 299, c: 19) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 299, c: 19) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 300, c: 32) - mutation from Slice_UnboundUpper to Slice_Unbounded
+ - calcure/data.py: (l: 300, c: 32) - mutation from Slice_UnboundUpper to Slice_UnboundLower
+ - calcure/data.py: (l: 302, c: 32) - mutation from <class 'ast.Add'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 302, c: 32) - mutation from <class 'ast.Add'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 302, c: 32) - mutation from <class 'ast.Add'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 302, c: 32) - mutation from <class 'ast.Add'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 302, c: 32) - mutation from <class 'ast.Add'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 302, c: 32) - mutation from <class 'ast.Add'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 303, c: 31) - mutation from True to None
+ - calcure/data.py: (l: 303, c: 31) - mutation from True to False
+ - calcure/data.py: (l: 308, c: 23) - mutation from True to None
+ - calcure/data.py: (l: 308, c: 23) - mutation from True to False
+ - calcure/data.py: (l: 312, c: 8) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 312, c: 8) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 314, c: 15) - mutation from <class 'ast.Add'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 314, c: 15) - mutation from <class 'ast.Add'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 314, c: 15) - mutation from <class 'ast.Add'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 314, c: 15) - mutation from <class 'ast.Add'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 314, c: 15) - mutation from <class 'ast.Add'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 314, c: 15) - mutation from <class 'ast.Add'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 323, c: 12) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 323, c: 12) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 323, c: 16) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 323, c: 16) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 323, c: 16) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 323, c: 16) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 323, c: 16) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 323, c: 16) - mutation from <class 'ast.And'> to <class 'ast.Or'>
+ - calcure/data.py: (l: 324, c: 20) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 324, c: 20) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 324, c: 20) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 324, c: 20) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 324, c: 20) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 325, c: 20) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 325, c: 20) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 325, c: 20) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 325, c: 20) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 325, c: 20) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 326, c: 20) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 326, c: 20) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 326, c: 20) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 326, c: 20) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 326, c: 20) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 327, c: 23) - mutation from True to False
+ - calcure/data.py: (l: 327, c: 23) - mutation from True to None
+ - calcure/data.py: (l: 328, c: 15) - mutation from False to True
+ - calcure/data.py: (l: 328, c: 15) - mutation from False to None
+ - calcure/data.py: (l: 333, c: 12) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 333, c: 12) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 333, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 333, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 333, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 333, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 333, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 335, c: 31) - mutation from True to None
+ - calcure/data.py: (l: 335, c: 31) - mutation from True to False
+ - calcure/data.py: (l: 341, c: 12) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 341, c: 12) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 341, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 341, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 341, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 341, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 341, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 345, c: 31) - mutation from True to None
+ - calcure/data.py: (l: 345, c: 31) - mutation from True to False
+ - calcure/data.py: (l: 355, c: 12) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 355, c: 12) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 355, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 355, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 355, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 355, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 355, c: 15) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 355, c: 15) - mutation from <class 'ast.And'> to <class 'ast.Or'>
+ - calcure/data.py: (l: 355, c: 47) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 355, c: 47) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 355, c: 47) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 355, c: 47) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 355, c: 47) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 369, c: 12) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 369, c: 12) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 369, c: 15) - mutation from <class 'ast.GtE'> to <class 'ast.Eq'>
+ - calcure/data.py: (l: 369, c: 15) - mutation from <class 'ast.GtE'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 369, c: 15) - mutation from <class 'ast.GtE'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 369, c: 15) - mutation from <class 'ast.GtE'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 369, c: 15) - mutation from <class 'ast.GtE'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 371, c: 32) - mutation from <class 'ast.Add'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 371, c: 32) - mutation from <class 'ast.Add'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 371, c: 32) - mutation from <class 'ast.Add'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 371, c: 32) - mutation from <class 'ast.Add'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 371, c: 32) - mutation from <class 'ast.Add'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 371, c: 32) - mutation from <class 'ast.Add'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 371, c: 45) - mutation from <class 'ast.Mult'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 371, c: 45) - mutation from <class 'ast.Mult'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 371, c: 45) - mutation from <class 'ast.Mult'> to <class 'ast.Add'>
+ - calcure/data.py: (l: 371, c: 45) - mutation from <class 'ast.Mult'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 371, c: 45) - mutation from <class 'ast.Mult'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 371, c: 45) - mutation from <class 'ast.Mult'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 371, c: 50) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 371, c: 50) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 371, c: 50) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 371, c: 50) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 371, c: 50) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 372, c: 33) - mutation from <class 'ast.Add'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 372, c: 33) - mutation from <class 'ast.Add'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 372, c: 33) - mutation from <class 'ast.Add'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 372, c: 33) - mutation from <class 'ast.Add'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 372, c: 33) - mutation from <class 'ast.Add'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 372, c: 33) - mutation from <class 'ast.Add'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 372, c: 47) - mutation from <class 'ast.Mult'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 372, c: 47) - mutation from <class 'ast.Mult'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 372, c: 47) - mutation from <class 'ast.Mult'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 372, c: 47) - mutation from <class 'ast.Mult'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 372, c: 47) - mutation from <class 'ast.Mult'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 372, c: 47) - mutation from <class 'ast.Mult'> to <class 'ast.Add'>
+ - calcure/data.py: (l: 372, c: 52) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 372, c: 52) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 372, c: 52) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 372, c: 52) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 372, c: 52) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 373, c: 31) - mutation from <class 'ast.Add'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 373, c: 31) - mutation from <class 'ast.Add'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 373, c: 31) - mutation from <class 'ast.Add'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 373, c: 31) - mutation from <class 'ast.Add'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 373, c: 31) - mutation from <class 'ast.Add'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 373, c: 31) - mutation from <class 'ast.Add'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 373, c: 31) - mutation from <class 'ast.Add'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 373, c: 31) - mutation from <class 'ast.Add'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 373, c: 31) - mutation from <class 'ast.Add'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 373, c: 31) - mutation from <class 'ast.Add'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 373, c: 31) - mutation from <class 'ast.Add'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 373, c: 31) - mutation from <class 'ast.Add'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 373, c: 31) - mutation from <class 'ast.Add'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 373, c: 31) - mutation from <class 'ast.Add'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 373, c: 31) - mutation from <class 'ast.Add'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 373, c: 31) - mutation from <class 'ast.Add'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 373, c: 31) - mutation from <class 'ast.Add'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 373, c: 31) - mutation from <class 'ast.Add'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 373, c: 43) - mutation from <class 'ast.Mult'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 373, c: 43) - mutation from <class 'ast.Mult'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 373, c: 43) - mutation from <class 'ast.Mult'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 373, c: 43) - mutation from <class 'ast.Mult'> to <class 'ast.Add'>
+ - calcure/data.py: (l: 373, c: 43) - mutation from <class 'ast.Mult'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 373, c: 43) - mutation from <class 'ast.Mult'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 373, c: 48) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 373, c: 48) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 373, c: 48) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 373, c: 48) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 373, c: 48) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 373, c: 87) - mutation from <class 'ast.Mult'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 373, c: 87) - mutation from <class 'ast.Mult'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 373, c: 87) - mutation from <class 'ast.Mult'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 373, c: 87) - mutation from <class 'ast.Mult'> to <class 'ast.Add'>
+ - calcure/data.py: (l: 373, c: 87) - mutation from <class 'ast.Mult'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 373, c: 87) - mutation from <class 'ast.Mult'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 373, c: 87) - mutation from <class 'ast.Mult'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 373, c: 87) - mutation from <class 'ast.Mult'> to <class 'ast.Add'>
+ - calcure/data.py: (l: 373, c: 87) - mutation from <class 'ast.Mult'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 373, c: 87) - mutation from <class 'ast.Mult'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 373, c: 87) - mutation from <class 'ast.Mult'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 373, c: 87) - mutation from <class 'ast.Mult'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 373, c: 94) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 373, c: 94) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 373, c: 94) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 373, c: 94) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 373, c: 94) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 373, c: 135) - mutation from <class 'ast.Mult'> to <class 'ast.Add'>
+ - calcure/data.py: (l: 373, c: 135) - mutation from <class 'ast.Mult'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 373, c: 135) - mutation from <class 'ast.Mult'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 373, c: 135) - mutation from <class 'ast.Mult'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 373, c: 135) - mutation from <class 'ast.Mult'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 373, c: 135) - mutation from <class 'ast.Mult'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 373, c: 135) - mutation from <class 'ast.Mult'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 373, c: 135) - mutation from <class 'ast.Mult'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 373, c: 135) - mutation from <class 'ast.Mult'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 373, c: 135) - mutation from <class 'ast.Mult'> to <class 'ast.Add'>
+ - calcure/data.py: (l: 373, c: 135) - mutation from <class 'ast.Mult'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 373, c: 135) - mutation from <class 'ast.Mult'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 373, c: 143) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 373, c: 143) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 373, c: 143) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 373, c: 143) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 373, c: 143) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 378, c: 12) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 378, c: 12) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 396, c: 16) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 405, c: 28) - mutation from Slice_UnboundUpper to Slice_UnboundLower
+ - calcure/data.py: (l: 417, c: 8) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 417, c: 11) - mutation from <class 'ast.In'> to <class 'ast.NotIn'>
+ - calcure/data.py: (l: 421, c: 16) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 421, c: 19) - mutation from <class 'ast.Add'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 421, c: 19) - mutation from <class 'ast.Add'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 421, c: 19) - mutation from <class 'ast.Add'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 421, c: 19) - mutation from <class 'ast.Gt'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 421, c: 19) - mutation from <class 'ast.Gt'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 421, c: 19) - mutation from <class 'ast.Gt'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 425, c: 81) - mutation from <class 'ast.Add'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 425, c: 81) - mutation from <class 'ast.Add'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 425, c: 81) - mutation from <class 'ast.Add'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 425, c: 81) - mutation from <class 'ast.Add'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 425, c: 81) - mutation from <class 'ast.Add'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 426, c: 16) - mutation from If_Statement to If_True
+ - calcure/data.py: (l: 426, c: 16) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 426, c: 19) - mutation from <class 'ast.Gt'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 426, c: 19) - mutation from <class 'ast.Gt'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 426, c: 19) - mutation from <class 'ast.Gt'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 426, c: 19) - mutation from <class 'ast.Gt'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 426, c: 19) - mutation from <class 'ast.Gt'> to <class 'ast.Eq'>
+ - calcure/data.py: (l: 426, c: 25) - mutation from <class 'ast.Add'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 426, c: 25) - mutation from <class 'ast.Add'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 426, c: 25) - mutation from <class 'ast.Add'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 426, c: 25) - mutation from <class 'ast.Add'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 426, c: 25) - mutation from <class 'ast.Add'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 426, c: 25) - mutation from <class 'ast.Add'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 427, c: 20) - mutation from AugAssign_Add to AugAssign_Mult
+ - calcure/data.py: (l: 427, c: 20) - mutation from AugAssign_Add to AugAssign_Div
+ - calcure/data.py: (l: 427, c: 20) - mutation from AugAssign_Add to AugAssign_Sub
+ - calcure/data.py: (l: 432, c: 22) - mutation from <class 'ast.Sub'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 432, c: 22) - mutation from <class 'ast.Sub'> to <class 'ast.Add'>
+ - calcure/data.py: (l: 432, c: 22) - mutation from <class 'ast.Sub'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 432, c: 22) - mutation from <class 'ast.Sub'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 432, c: 22) - mutation from <class 'ast.Sub'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 432, c: 22) - mutation from <class 'ast.Sub'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 433, c: 24) - mutation from <class 'ast.Add'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 433, c: 24) - mutation from <class 'ast.Add'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 433, c: 24) - mutation from <class 'ast.Add'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 433, c: 24) - mutation from <class 'ast.Add'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 433, c: 24) - mutation from <class 'ast.Add'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 433, c: 24) - mutation from <class 'ast.Add'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 437, c: 8) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 437, c: 11) - mutation from <class 'ast.Eq'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 437, c: 11) - mutation from <class 'ast.Eq'> to <class 'ast.GtE'>
+ - calcure/data.py: (l: 437, c: 11) - mutation from <class 'ast.Eq'> to <class 'ast.NotEq'>
+ - calcure/data.py: (l: 437, c: 11) - mutation from <class 'ast.Eq'> to <class 'ast.Gt'>
+ - calcure/data.py: (l: 437, c: 11) - mutation from <class 'ast.Eq'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 438, c: 12) - mutation from If_Statement to If_False
+ - calcure/data.py: (l: 438, c: 15) - mutation from <class 'ast.Gt'> to <class 'ast.LtE'>
+ - calcure/data.py: (l: 438, c: 15) - mutation from <class 'ast.Gt'> to <class 'ast.Eq'>
+ - calcure/data.py: (l: 438, c: 15) - mutation from <class 'ast.Gt'> to <class 'ast.Lt'>
+ - calcure/data.py: (l: 439, c: 27) - mutation from <class 'ast.Add'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 439, c: 27) - mutation from <class 'ast.Add'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 439, c: 27) - mutation from <class 'ast.Add'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 439, c: 27) - mutation from <class 'ast.Add'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 439, c: 27) - mutation from <class 'ast.Add'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 439, c: 27) - mutation from <class 'ast.Add'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 439, c: 34) - mutation from <class 'ast.FloorDiv'> to <class 'ast.Add'>
+ - calcure/data.py: (l: 439, c: 34) - mutation from <class 'ast.FloorDiv'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 439, c: 34) - mutation from <class 'ast.FloorDiv'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 439, c: 34) - mutation from <class 'ast.FloorDiv'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 439, c: 34) - mutation from <class 'ast.FloorDiv'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 439, c: 34) - mutation from <class 'ast.FloorDiv'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 439, c: 35) - mutation from <class 'ast.Sub'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 439, c: 35) - mutation from <class 'ast.Sub'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 439, c: 35) - mutation from <class 'ast.Sub'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 439, c: 35) - mutation from <class 'ast.Sub'> to <class 'ast.Add'>
+ - calcure/data.py: (l: 439, c: 35) - mutation from <class 'ast.Sub'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 439, c: 35) - mutation from <class 'ast.Sub'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 440, c: 28) - mutation from <class 'ast.Sub'> to <class 'ast.FloorDiv'>
+ - calcure/data.py: (l: 440, c: 28) - mutation from <class 'ast.Sub'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 440, c: 28) - mutation from <class 'ast.Sub'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 440, c: 28) - mutation from <class 'ast.Sub'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 440, c: 28) - mutation from <class 'ast.Sub'> to <class 'ast.Add'>
+ - calcure/data.py: (l: 440, c: 28) - mutation from <class 'ast.Sub'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 440, c: 36) - mutation from <class 'ast.Mult'> to <class 'ast.Add'>
+ - calcure/data.py: (l: 440, c: 36) - mutation from <class 'ast.Mult'> to <class 'ast.Mod'>
+ - calcure/data.py: (l: 440, c: 36) - mutation from <class 'ast.Mult'> to <class 'ast.Sub'>
+ - calcure/data.py: (l: 440, c: 40) - mutation from <class 'ast.Sub'> to <class 'ast.Mult'>
+ - calcure/data.py: (l: 440, c: 40) - mutation from <class 'ast.Sub'> to <class 'ast.Pow'>
+ - calcure/data.py: (l: 440, c: 40) - mutation from <class 'ast.Sub'> to <class 'ast.Div'>
+ - calcure/data.py: (l: 440, c: 40) - mutation from <class 'ast.Sub'> to <class 'ast.Add'>
