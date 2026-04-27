@@ -875,3 +875,349 @@ class TestDataIntegrity:
             "tasks.csv.bak must be cleaned up after a successful save "
             "(atomic rename did not complete or .bak was not removed)"
         )
+
+
+# ===========================================================================
+# Group I – Combinatorial CLI Tests (Pairwise)
+#
+# Factors and levels:
+#   F1 Content : --task  |  --event
+#   F2 Storage : --folder only  |  --config + --folder
+#   F3 Mode    : default  |  -p (privacy)
+#   F4 Count   : single write  |  multiple sequential writes
+#
+# Pairwise covering array (each pair of factor-levels appears at least once):
+#   i1  F1=task,  F2=folder,         F3=default,  F4=single
+#   i2  F1=event, F2=folder,         F3=default,  F4=single
+#   i3  F1=task,  F2=config+folder,  F3=default,  F4=single
+#   i4  F1=event, F2=config+folder,  F3=default,  F4=single
+#   i5  F1=task,  F2=folder,         F3=privacy,  F4=single
+#   i6  F1=event, F2=folder,         F3=privacy,  F4=single
+#   i7  F1=task+event, F2=folder,    F3=default,  F4=sequential
+#   i8  F1=task,  F2=folder,         F3=default,  F4=multiple ×3
+#   i9  F1=task+event, F2=folder×2,  F3=default,  F4=isolation
+#   i10 F1=event, F2=folder,         F3=default,  F4=multiple ×2
+# ===========================================================================
+
+class TestCombinatorialCLI:
+    """
+    Pairwise combinatorial tests simulating real user workflows.
+    All scenarios model how a developer or student would actually use calcure
+    from the command line: deadline reminders, meeting events, work/personal
+    folder separation, and privacy mode on a shared terminal.
+    """
+
+    def _setup(self, tmp_path, subdir="data"):
+        data_dir = tmp_path / subdir
+        cfg_path  = tmp_path / "calcure.ini"
+        make_config(cfg_path, data_dir)
+        return cfg_path, data_dir
+
+    # ── i1: deadline task → custom work folder ──────────────────────────────
+
+    def test_i1_deadline_task_lands_in_work_folder(self, tmp_path):
+        """
+        CT – F1=task, F2=--folder, F3=default, F4=single
+        Scenario: a developer quick-captures a deadline as a task and wants it
+        stored in a dedicated work folder, not the default ~/.config/calcure.
+        Verifies that --task + --folder route the write to the right directory
+        and that the task name is preserved verbatim in tasks.csv.
+        """
+        cfg, data = self._setup(tmp_path, "work")
+
+        run_with_pty(
+            [f"--config={cfg}", f"--folder={data}", "--task=Submit project report by Friday"],
+            tmp_path,
+        )
+
+        rows = read_tasks_csv(data)
+        # tasks.csv columns: id, status, priority, "name", tag
+        assert rows, "tasks.csv must not be empty after --task run"
+        names = [r[3].strip('"') for r in rows if len(r) >= 4]
+        assert any("Submit project report" in n for n in names), (
+            f"Task name must be stored verbatim in the work folder, got rows: {rows}"
+        )
+
+    # ── i2: team meeting event → custom work folder ──────────────────────────
+
+    def test_i2_meeting_event_lands_in_work_folder(self, tmp_path):
+        """
+        CT – F1=event, F2=--folder, F3=default, F4=single
+        Scenario: a user adds a recurring team meeting as a one-off event to
+        a dedicated work folder.  Verifies that --event + --folder write the
+        correct year, month, and day to events.csv.
+        """
+        cfg, data = self._setup(tmp_path, "work")
+
+        run_with_pty(
+            [f"--config={cfg}", f"--folder={data}", "--event=2025-09-15-SprintPlanningMeeting"],
+            tmp_path,
+        )
+
+        rows = read_events_csv(data)
+        # events.csv columns: id, year, month, day, name, repetition, freq, status
+        found = any(
+            len(r) >= 5 and r[1] == "2025" and r[2] == "9" and r[3] == "15"
+            and "SprintPlanningMeeting" in r[4]
+            for r in rows
+        )
+        assert found, (
+            f"Event must have year=2025, month=9, day=15 in the work folder, got: {rows}"
+        )
+
+    # ── i3: task with all three flags (config + folder + task) ───────────────
+
+    def test_i3_task_with_config_overrides_default_storage(self, tmp_path):
+        """
+        CT – F1=task, F2=--config+--folder, F3=default, F4=single
+        Scenario: a power user keeps a custom config (e.g. in Dropbox) but
+        overrides the data folder at runtime with --folder.  Both flags must
+        cooperate: config is read for display settings, --folder routes writes.
+        Fault target: --folder silently ignored when --config is also present.
+        """
+        cfg, data = self._setup(tmp_path, "dropbox_data")
+
+        run_with_pty(
+            [f"--config={cfg}", f"--folder={data}", "--task=Review pull requests before standup"],
+            tmp_path,
+        )
+
+        rows = read_tasks_csv(data)
+        assert rows, "tasks.csv must exist in --folder's directory when --config is also set"
+        names = [r[3].strip('"') for r in rows if len(r) >= 4]
+        assert any("Review pull requests" in n for n in names), (
+            f"Task must land in --folder's directory even when --config is supplied, got: {rows}"
+        )
+
+    # ── i4: event with all three flags ───────────────────────────────────────
+
+    def test_i4_event_with_config_and_folder_correct_date_fields(self, tmp_path):
+        """
+        CT – F1=event, F2=--config+--folder, F3=default, F4=single
+        Scenario: user with a shared team config adds a personal flight event.
+        Checks that the event date is split into separate year/month/day columns
+        and stored in the --folder directory, not the config's default location.
+        """
+        cfg, data = self._setup(tmp_path, "personal")
+
+        run_with_pty(
+            [f"--config={cfg}", f"--folder={data}", "--event=2025-11-28-FlightToConference"],
+            tmp_path,
+        )
+
+        rows = read_events_csv(data)
+        found = any(
+            len(r) >= 5 and r[1] == "2025" and r[2] == "11" and r[3] == "28"
+            and "FlightToConference" in r[4]
+            for r in rows
+        )
+        assert found, (
+            f"Event date fields (2025/11/28) must be stored correctly, got: {rows}"
+        )
+
+    # ── i5: sensitive task under privacy mode ────────────────────────────────
+
+    def test_i5_sensitive_task_stored_despite_privacy_mode(self, tmp_path):
+        """
+        CT – F1=task, F2=--folder, F3=-p, F4=single
+        Scenario: user on a shared office terminal adds a medical appointment
+        with -p so titles are hidden on screen, but the task must still be
+        persisted to disk so it survives after the terminal session closes.
+        Fault target: privacy mode accidentally suppressing the file write.
+        """
+        cfg, data = self._setup(tmp_path, "personal")
+
+        run_with_pty(
+            [f"--config={cfg}", f"--folder={data}", "-p", "--task=Doctor appointment at 3pm"],
+            tmp_path,
+        )
+
+        rows = read_tasks_csv(data)
+        assert rows, "-p must not prevent tasks.csv from being written"
+        names = [r[3].strip('"') for r in rows if len(r) >= 4]
+        assert any("Doctor appointment" in n for n in names), (
+            f"Task must be stored even when -p is active, got: {rows}"
+        )
+
+    # ── i6: sensitive event under privacy mode ───────────────────────────────
+
+    def test_i6_sensitive_event_stored_despite_privacy_mode(self, tmp_path):
+        """
+        CT – F1=event, F2=--folder, F3=-p, F4=single
+        Scenario: user books a therapy session event with -p active.
+        Privacy only hides on-screen rendering; the write to disk must proceed.
+        Fault target: -p flag short-circuiting the event-save code path.
+        """
+        cfg, data = self._setup(tmp_path, "personal")
+
+        run_with_pty(
+            [f"--config={cfg}", f"--folder={data}", "-p", "--event=2025-10-05-TherapySession"],
+            tmp_path,
+        )
+
+        rows = read_events_csv(data)
+        found = any(
+            len(r) >= 5 and r[1] == "2025" and r[2] == "10" and r[3] == "5"
+            and "TherapySession" in r[4]
+            for r in rows
+        )
+        assert found, (
+            f"Event must be stored even when -p is active, got: {rows}"
+        )
+
+    # ── i7: morning workflow – task then event, no cross-contamination ────────
+
+    def test_i7_morning_workflow_task_and_event_stay_in_separate_files(self, tmp_path):
+        """
+        CT – F1=task+event, F2=--folder, F3=default, F4=sequential
+        Scenario: a developer starts the day by (1) adding a task "Fix login
+        bug" and then (2) adding a calendar event "Deploy to prod at 14:00".
+        Both writes go to the same folder but each must land in the correct
+        file.  tasks.csv must contain only the task; events.csv only the event.
+        Fault target: saver writing to the wrong file, or second run wiping
+        the first write.
+        """
+        cfg, data = self._setup(tmp_path, "work")
+
+        run_with_pty(
+            [f"--config={cfg}", f"--folder={data}", "--task=Fix login bug before release"],
+            tmp_path,
+        )
+        run_with_pty(
+            [f"--config={cfg}", f"--folder={data}", "--event=2025-08-20-DeployToProd"],
+            tmp_path,
+        )
+
+        task_rows  = read_tasks_csv(data)
+        event_rows = read_events_csv(data)
+
+        task_names  = [r[3].strip('"') for r in task_rows  if len(r) >= 4]
+        event_names = [r[4]            for r in event_rows if len(r) >= 5]
+
+        assert any("Fix login bug" in n for n in task_names), (
+            f"Task must be in tasks.csv, got: {task_rows}"
+        )
+        assert any("DeployToProd" in n for n in event_names), (
+            f"Event must be in events.csv, got: {event_rows}"
+        )
+        assert not any("DeployToProd" in n for n in task_names), (
+            "Event name must NOT appear in tasks.csv (cross-contamination)"
+        )
+        assert not any("Fix login bug" in n for n in event_names), (
+            "Task name must NOT appear in events.csv (cross-contamination)"
+        )
+
+    # ── i8: three tasks back-to-back all accumulate ───────────────────────────
+
+    def test_i8_three_sequential_tasks_all_accumulate(self, tmp_path):
+        """
+        CT – F1=task, F2=--folder, F3=default, F4=multiple ×3
+        Scenario: a developer bulk-adds three tasks from the terminal in quick
+        succession (e.g. copying items from a sprint board).  All three must
+        appear in tasks.csv – the second and third runs must append, not
+        overwrite the file.
+        Fault target: TaskSaverCSV truncating the file on each invocation
+        instead of loading existing tasks before saving.
+        """
+        cfg, data = self._setup(tmp_path, "work")
+
+        for task in [
+            "Write unit tests for auth module",
+            "Fix pagination bug on dashboard",
+            "Deploy hotfix to staging environment",
+        ]:
+            run_with_pty(
+                [f"--config={cfg}", f"--folder={data}", f"--task={task}"],
+                tmp_path,
+            )
+
+        rows  = read_tasks_csv(data)
+        names = [r[3].strip('"') for r in rows if len(r) >= 4]
+
+        assert len(names) == 3, (
+            f"All 3 tasks must be present after sequential --task runs, got {len(names)}: {names}"
+        )
+        assert any("unit tests"     in n for n in names), "First task missing"
+        assert any("pagination bug" in n for n in names), "Second task missing"
+        assert any("hotfix"         in n for n in names), "Third task missing"
+
+    # ── i9: work vs personal folder isolation ────────────────────────────────
+
+    def test_i9_work_and_personal_folders_are_fully_isolated(self, tmp_path):
+        """
+        CT – F1=task+event, F2=--folder×2 (two separate directories), F3=default
+        Scenario: a user maintains separate work and personal calcure instances
+        in different folders.  A task written to the work folder must never
+        appear in the personal folder, and vice versa.
+        Fault target: calcure using a global/shared state that leaks data
+        between invocations pointing at different --folder paths.
+        """
+        work_cfg,     work_data     = self._setup(tmp_path, "work")
+        personal_cfg, personal_data = tmp_path / "personal_cfg.ini", tmp_path / "personal"
+        make_config(personal_cfg, personal_data)
+
+        run_with_pty(
+            [f"--config={work_cfg}", f"--folder={work_data}", "--task=Q3 performance review"],
+            tmp_path,
+        )
+        run_with_pty(
+            [f"--config={personal_cfg}", f"--folder={personal_data}", "--task=Book holiday flights"],
+            tmp_path,
+        )
+
+        work_names     = [r[3].strip('"') for r in read_tasks_csv(work_data)     if len(r) >= 4]
+        personal_names = [r[3].strip('"') for r in read_tasks_csv(personal_data) if len(r) >= 4]
+
+        assert any("performance review" in n for n in work_names), (
+            f"Work task must appear in work folder, got: {work_names}"
+        )
+        assert any("holiday flights"    in n for n in personal_names), (
+            f"Personal task must appear in personal folder, got: {personal_names}"
+        )
+        assert not any("holiday flights"    in n for n in work_names), (
+            "Personal task must NOT bleed into work folder (isolation failure)"
+        )
+        assert not any("performance review" in n for n in personal_names), (
+            "Work task must NOT bleed into personal folder (isolation failure)"
+        )
+
+    # ── i10: two calendar events on different dates both persist ─────────────
+
+    def test_i10_two_events_on_different_dates_both_persist(self, tmp_path):
+        """
+        CT – F1=event, F2=--folder, F3=default, F4=multiple ×2
+        Scenario: a user adds two calendar events on separate days (New Year's
+        Day and a project deadline).  Both must survive in events.csv with
+        their own distinct date fields – the second write must not overwrite
+        the first.
+        Fault target: EventSaverCSV recreating the file from scratch on each
+        run, losing previously stored events.
+        """
+        cfg, data = self._setup(tmp_path, "personal")
+
+        run_with_pty(
+            [f"--config={cfg}", f"--folder={data}", "--event=2026-01-01-NewYearsDay"],
+            tmp_path,
+        )
+        run_with_pty(
+            [f"--config={cfg}", f"--folder={data}", "--event=2026-03-31-ProjectDeadline"],
+            tmp_path,
+        )
+
+        rows = read_events_csv(data)
+        assert len(rows) == 2, (
+            f"Both events must be stored (expected 2 rows, got {len(rows)}): {rows}"
+        )
+
+        new_year = any(
+            len(r) >= 5 and r[1] == "2026" and r[2] == "1" and r[3] == "1"
+            and "NewYearsDay" in r[4]
+            for r in rows
+        )
+        deadline = any(
+            len(r) >= 5 and r[1] == "2026" and r[2] == "3" and r[3] == "31"
+            and "ProjectDeadline" in r[4]
+            for r in rows
+        )
+        assert new_year,  f"New Year's Day event missing or wrong date, got: {rows}"
+        assert deadline,  f"Project deadline event missing or wrong date, got: {rows}"
